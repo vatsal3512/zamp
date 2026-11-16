@@ -12,18 +12,33 @@ const ALL_TABLES = [
   t.goodsReceipts, t.purchaseOrders, t.vendors, t.uploadChunks, t.extractionCache,
 ];
 
-/** Truncate everything and load the demo procurement system, inbox and (optionally) cached extractions. */
+const DEMO_STATE_TABLES = [t.runEvents, t.runs, t.invoices, t.priorInvoices, t.auditLog, t.policies, t.goodsReceipts, t.purchaseOrders, t.vendors, t.uploadChunks];
+
+/** "Reset demo data": restore procurement state, policy and history; keep documents, inbox and the extraction cache. No file I/O. */
+export async function resetDemoState(db: Db) {
+  for (const table of DEMO_STATE_TABLES) await db.delete(table);
+  await insertSeedRows(db);
+}
+
+/** Truncate everything and load the demo procurement system, inbox PDFs and (optionally) cached extractions. */
 export async function seedDatabase(db: Db, opts: { withCache: boolean; root?: string }) {
   const root = opts.root ?? process.cwd();
   for (const table of ALL_TABLES) await db.delete(table);
+  await insertSeedRows(db);
+  await insertDocuments(db, root);
+  if (opts.withCache) await insertCache(db, root);
+}
 
+async function insertSeedRows(db: Db) {
   await db.insert(t.vendors).values(SEED.vendors);
   await db.insert(t.purchaseOrders).values(SEED.purchaseOrders);
   await db.insert(t.goodsReceipts).values(SEED.goodsReceipts);
   await db.insert(t.priorInvoices).values(SEED.priorInvoices);
   const { version, ...body } = SEED.policy;
   await db.insert(t.policies).values({ version, body });
+}
 
+async function insertDocuments(db: Db, root: string) {
   for (const [i, s] of SCENARIOS.entries()) {
     const bytes = new Uint8Array(await readFile(path.join(root, "fixtures/pdfs", s.file)));
     await db.insert(t.documents).values({ id: `doc-${s.id}`, filename: s.file, bytes });
@@ -32,15 +47,14 @@ export async function seedDatabase(db: Db, opts: { withCache: boolean; root?: st
       receivedAt: s.envelope.receivedAt, documentId: `doc-${s.id}`, sortOrder: i,
     });
   }
+}
 
-  if (opts.withCache) {
-    const dir = path.join(root, "fixtures/extractions");
-    if (existsSync(dir)) {
-      for (const f of (await readdir(dir)).filter((x) => x.endsWith(".json"))) {
-        const { _model, ...invoice } = JSON.parse(await readFile(path.join(dir, f), "utf8")) as ExtractedInvoice & { _model: string };
-        await db.insert(t.extractionCache).values({ key: f.replace(/\.json$/, "").replace(/\.reextract$/, ":reextract"), model: _model, body: invoice });
-      }
-    }
+async function insertCache(db: Db, root: string) {
+  const dir = path.join(root, "fixtures/extractions");
+  if (!existsSync(dir)) return;
+  for (const f of (await readdir(dir)).filter((x) => x.endsWith(".json"))) {
+    const { _model, ...invoice } = JSON.parse(await readFile(path.join(dir, f), "utf8")) as ExtractedInvoice & { _model: string };
+    await db.insert(t.extractionCache).values({ key: f.replace(/\.json$/, "").replace(/\.reextract$/, ":reextract"), model: _model, body: invoice });
   }
 }
 

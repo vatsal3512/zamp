@@ -63,6 +63,14 @@ describe("PgRepo (PGlite)", () => {
     expect(audit.some((a) => a.action === "policy.update" && (a.before as any).priceTolPct === 0.02 && (a.after as any).priceTolPct === 0.05)).toBe(true);
   });
 
+  it("resets demo state without touching documents or the inbox", async () => {
+    const { resetDemoState } = await import("@/db/seed");
+    await resetDemoState(db);
+    expect((await repo.getPurchaseOrder("PO-2031"))!.billedToDateCents).toBe(0);
+    expect((await repo.getPolicy()).version).toBe(1);
+    expect(await repo.listInbox()).toHaveLength(21);
+  });
+
   it("restores everything on reset", async () => {
     await seedDatabase(db, { withCache: false });
     expect((await repo.getPurchaseOrder("PO-2031"))!.billedToDateCents).toBe(0);

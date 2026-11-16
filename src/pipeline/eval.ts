@@ -10,8 +10,11 @@ import { COMPANY } from "../../fixtures/seed-data";
 export interface EvalResult { id: string; tag: string; expected: Outcome; actual: Outcome | "FAILED"; rules: RuleId[]; rulesOk: boolean; pass: boolean }
 
 /** Runs one scenario end-to-end against a fresh in-memory procurement system. */
-export async function runScenario(s: Scenario, extractor: Extractor, pdfDir = "fixtures/pdfs"): Promise<EvalResult> {
-  const pdf = new Uint8Array(await readFile(path.resolve(process.cwd(), pdfDir, s.file)));
+export type PdfLoader = (s: Scenario) => Promise<Uint8Array>;
+const fromDisk = (pdfDir = "fixtures/pdfs"): PdfLoader => async (s) => new Uint8Array(await readFile(path.resolve(process.cwd(), pdfDir, s.file)));
+
+export async function runScenario(s: Scenario, extractor: Extractor, loadPdf: PdfLoader = fromDisk()): Promise<EvalResult> {
+  const pdf = await loadPdf(s);
   const r = await runPipeline({ documentId: s.id, pdf, envelope: s.envelope, source: "inbox" }, { repo: new MemoryRepo(), extractor, emit: () => {}, company: COMPANY });
   const actual = r.failed || !r.decision ? "FAILED" : r.decision.outcome;
   const rules = r.decision?.hits.map((h) => h.rule) ?? [];
@@ -19,8 +22,8 @@ export async function runScenario(s: Scenario, extractor: Extractor, pdfDir = "f
   return { id: s.id, tag: s.tag, expected: s.expected.outcome, actual, rules, rulesOk, pass: actual === s.expected.outcome && rulesOk };
 }
 
-export async function runEval(opts: { extractor: Extractor; pdfDir?: string }): Promise<EvalResult[]> {
+export async function runEval(opts: { extractor: Extractor; loadPdf?: PdfLoader }): Promise<EvalResult[]> {
   const out: EvalResult[] = [];
-  for (const s of SCENARIOS) out.push(await runScenario(s, opts.extractor, opts.pdfDir));
+  for (const s of SCENARIOS) out.push(await runScenario(s, opts.extractor, opts.loadPdf));
   return out;
 }
