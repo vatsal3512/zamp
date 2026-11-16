@@ -55,7 +55,7 @@ export function match(lines: NetLine[], totalCents: Cents, po: PurchaseOrder, gr
       hits.push({ rule: "R-TOL-01", outcome: "HOLD", facts: { scope: "line", line: l.description, poUnit: p.unitPriceCents, invUnit: l.unitCents, pct: varPct, cents: varCents, tolPct: policy.priceTolPct, tolAbs: policy.priceTolAbsCents } });
       findings.push({ level: "error", text: `${l.description}: ${formatUsd(l.unitCents)} vs PO ${formatUsd(p.unitPriceCents)} (${formatSignedUsd(varCents)} · +${formatPct(varPct)})` });
     } else if (varCents > 0) {
-      hits.push({ rule: "R-TOL-02", outcome: "NOTE", facts: { line: l.description, pct: varPct, cents: varCents } });
+      hits.push({ rule: "R-TOL-02", outcome: "NOTE", facts: { line: l.description, pct: varPct, cents: varCents, tolPct: policy.priceTolPct } });
       findings.push({ level: "info", text: `${l.description}: ${formatSignedUsd(varCents)} within tolerance` });
     } else findings.push({ level: "ok", text: `${l.description}: price matches PO` });
 

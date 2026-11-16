@@ -86,3 +86,10 @@ describe("decide", () => {
     for (const r of RULE_IDS) expect(explain(r, {}).reason.length, r).toBeGreaterThan(0);
   });
 });
+
+describe("RULE_TITLES", () => {
+  it("has a title for every rule", async () => {
+    const { RULE_TITLES } = await import("@/templates/explain");
+    for (const r of RULE_IDS) expect(RULE_TITLES[r]?.length, r).toBeGreaterThan(3);
+  });
+});

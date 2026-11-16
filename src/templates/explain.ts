@@ -90,3 +90,15 @@ export function draftEmail(decision: Decision, vendor: Vendor | null, invoiceNum
     body: `Hello ${vendor.legalName} team,\n\nWe're unable to process ${ref} yet:\n${reasons}\n\nCould you please ${VENDOR_ASK[p.rule]!(p.facts)}?\n\nThank you,\nNorthwind Labs — Accounts Payable`,
   };
 }
+
+/** Generic name per rule, for tables (escalation owners, exceptions by type) where there is no single invoice. */
+export const RULE_TITLES: Record<RuleId, string> = {
+  "R-DOC-01": "Same file already processed", "R-DOC-02": "Not a payable invoice", "R-DOC-03": "Billed to another company",
+  "R-DOC-04": "Unreadable file", "R-EXT-01": "Missing required details", "R-EXT-02": "Totals don't add up",
+  "R-TAX-01": "Tax doesn't reconcile", "R-CUR-01": "Not in USD", "R-VEN-01": "Unknown vendor", "R-VEN-02": "Bank details changed",
+  "R-VEN-03": "Unexpected sender domain", "R-VEN-04": "Vendor blocked or inactive", "R-PO-01": "No matching PO",
+  "R-PO-02": "PO inferred from lines", "R-PO-03": "Over the PO total", "R-PO-04": "PO closed or cancelled",
+  "R-TOL-01": "Price over tolerance", "R-TOL-02": "Price within tolerance", "R-LIN-01": "Item not on the PO",
+  "R-BUN-01": "Bundled billing", "R-FRT-01": "Freight not on the PO", "R-GRN-01": "Billed more than received",
+  "R-GRN-02": "No goods receipt yet", "R-DUP-01": "Probable duplicate", "R-DUP-02": "Possible duplicate", "R-APR-01": "Above sign-off limit",
+};

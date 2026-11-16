@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { AlertTriangle, Check, ChevronRight, CircleAlert, CircleDashed, Info, Loader2, Play, ShieldAlert, X } from "lucide-react";
+import { AlertTriangle, RefreshCw, Check, ChevronRight, CircleAlert, CircleDashed, Info, Loader2, Play, ShieldAlert, X } from "lucide-react";
 import { toast } from "sonner";
 import { useRun, type RunSource, type RunView, type StageView } from "./use-run";
 import type { Highlight } from "./document-canvas";
@@ -14,9 +14,10 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Textarea } from "@/components/ui/textarea";
 import { actionsFor, type Action } from "@/lib/actions";
 import { STATUS_META, TONE } from "@/lib/status";
-import { useRefresh } from "@/lib/use-api";
+import { useApi, useRefresh } from "@/lib/use-api";
+import { decisionDiff } from "@/lib/decision-diff";
 import { formatPct } from "@/domain/money";
-import type { Finding, Outcome } from "@/domain/types";
+import type { Finding, Outcome, Policy } from "@/domain/types";
 import type { RunDetail } from "@/pipeline/ports";
 import { cn } from "@/lib/utils";
 
@@ -72,6 +73,7 @@ export function RunWorkspace({ source }: { source: RunSource }) {
           <AnimatePresence>
             {view.done && !logOpen && (
               <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
+                {detail?.run.rerunOf && view.decision && <RerunBanner rerunOf={detail.run.rerunOf} decision={view.decision} />}
                 {view.failed ? <FailedBanner view={view} /> : <DecisionBanner view={view} detail={detail?.run ?? null} />}
                 {view.lines.length > 0 && <MatchGrid view={view} />}
                 {view.decision?.email && <EmailPreview email={view.decision.email} />}
@@ -258,6 +260,19 @@ function DecisionBanner({ view, detail }: { view: RunView; detail: RunDetail | n
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function RerunBanner({ rerunOf, decision }: { rerunOf: string; decision: NonNullable<RunView["decision"]> }) {
+  const prev = useApi<{ run: RunDetail }>(`/api/runs/${rerunOf}`);
+  const policy = useApi<Policy>("/api/policy");
+  if (!prev.data?.run.decision || !policy.data) return null;
+  const text = decisionDiff(prev.data.run.decision, decision, policy.data);
+  return (
+    <div className="flex items-center gap-2 border-b border-border bg-st-blue-bg px-6 py-2.5 text-[13px] text-st-blue">
+      <RefreshCw className="size-3.5" />
+      <span className="font-medium">{text ?? `Re-run against AOP v${policy.data.version}: same decision (${decision.outcome})`}</span>
     </div>
   );
 }

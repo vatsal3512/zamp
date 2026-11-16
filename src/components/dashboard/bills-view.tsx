@@ -8,7 +8,7 @@ import { UploadDrop } from "./upload-drop";
 import { EvalCell } from "./eval-cell";
 import { useApi } from "@/lib/use-api";
 import { filterRuns } from "@/domain/attention";
-import { explain } from "@/templates/explain";
+import { RULE_TITLES } from "@/templates/explain";
 import { formatPct, formatUsd } from "@/domain/money";
 import type { RuleId } from "@/domain/types";
 import type { InboxRow, RunSummary } from "@/pipeline/ports";
@@ -106,7 +106,7 @@ export function BillsView({ initialTab = "all" }: { initialTab?: "all" | "attent
               {exceptions.map(([rule, n]) => (
                 <li key={rule} className="flex h-10 items-center gap-3 px-5">
                   <RuleChip rule={rule} />
-                  <span className="w-44 truncate text-[13px] text-ink-2 first-letter:uppercase">{explain(rule as RuleId, {}).short}</span>
+                  <span className="w-44 truncate text-[13px] text-ink-2 ">{RULE_TITLES[rule as RuleId]}</span>
                   <div className="h-1.5 flex-1 rounded-full bg-surface-2">
                     <div className="h-1.5 rounded-full bg-ink/70" style={{ width: `${(n / maxCount) * 100}%` }} />
                   </div>
