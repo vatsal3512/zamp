@@ -5,6 +5,7 @@ import * as t from "./schema";
 import type { Cents, ExtractedInvoice, Outcome, Policy, PriorInvoice, PurchaseOrder, RunEvent, Vendor } from "@/domain/types";
 import type { AppRepo, AuditRow, InboxRow, OverrideAction, Repo, RunDetail, RunSummary } from "@/pipeline/ports";
 import { toCents } from "@/domain/money";
+import { needsAttention } from "@/domain/attention";
 
 export type Db = PgDatabase<PgQueryResultHKT, typeof t>;
 
@@ -194,9 +195,4 @@ export class PgRepo implements AppRepo {
   }
 }
 
-/** HOLD not yet resolved by a person, or ROUTE not yet signed off. */
-export function needsAttention(r: RunSummary): boolean {
-  if (r.outcome === "HOLD") return !r.override || r.override.action === "query_sent";
-  if (r.outcome === "ROUTE_FOR_APPROVAL") return r.override?.action !== "sign_off" && r.override?.action !== "reject";
-  return false;
-}
+export { needsAttention } from "@/domain/attention";

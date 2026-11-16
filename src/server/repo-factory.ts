@@ -28,9 +28,28 @@ export async function resetDemo(): Promise<void> {
 
 export const dbCacheStore = (repo: AppRepo): ExtractionStore => ({ get: (k) => repo.getCache(k), set: (k, m, v) => repo.setCache(k, m, v) });
 
+/**
+ * Offline dev mode (EXTRACTOR=fixtures): returns each fixture PDF's known printed content, keyed by file hash.
+ * Unknown files fail as unreadable. Labelled "fixtures (offline)" everywhere it appears — never used in production.
+ */
+async function fixtureExtractor(): Promise<Extractor> {
+  const [{ createHash }, { readFileSync }, { SCENARIOS }, { extractionFor }, { ExtractionInvalidError }] = await Promise.all([
+    import("node:crypto"), import("node:fs"), import("../../fixtures/scenarios"), import("../../fixtures/doc-to-extraction"), import("@/ai/gemini-extractor"),
+  ]);
+  const bySha = new Map(SCENARIOS.map((s) => [createHash("sha256").update(readFileSync(`fixtures/pdfs/${s.file}`)).digest("hex"), s.id]));
+  return {
+    extract: async (_pdf, sha) => {
+      const id = bySha.get(sha);
+      if (!id) throw new ExtractionInvalidError("offline fixtures mode only knows the demo PDFs");
+      return { invoice: extractionFor(id), model: "fixtures (offline)", cached: false, attempts: [] };
+    },
+  };
+}
+
 /** Gemini behind the key pool, model chain and the extraction cache. */
-export function getExtractor(repo: AppRepo): Extractor {
+export async function getExtractor(repo: AppRepo): Promise<Extractor> {
   if (g.__extractorOverride) return g.__extractorOverride;
+  if (process.env.EXTRACTOR === "fixtures") return (g.__extractorOverride = await fixtureExtractor());
   const gemini = new GeminiExtractor({
     keys: list(process.env.GEMINI_API_KEYS),
     models: list(process.env.GEMINI_MODELS),

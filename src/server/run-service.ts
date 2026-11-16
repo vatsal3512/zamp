@@ -54,7 +54,7 @@ export async function startRunStream(body: StartRunBody): Promise<Response> {
 
   const run = runPipeline(
     { documentId: doc.id, pdf: doc.bytes, envelope, source, rerunOf: body.rerunOf, fresh: body.fresh },
-    { repo, extractor: getExtractor(repo), emit: write, company: COMPANY },
+    { repo, extractor: await getExtractor(repo), emit: write, company: COMPANY },
   )
     .catch((e) => console.error("pipeline crashed", e))
     .finally(() => {

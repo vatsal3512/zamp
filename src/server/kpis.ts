@@ -1,5 +1,5 @@
 import type { RunSummary } from "@/pipeline/ports";
-import { needsAttention } from "@/db/pg-repo";
+import { needsAttention } from "@/domain/attention";
 
 export interface Kpis {
   processed: number; straightThroughPct: number; needsAttentionCount: number; heldCents: number;

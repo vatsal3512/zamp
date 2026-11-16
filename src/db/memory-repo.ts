@@ -3,7 +3,7 @@ import path from "node:path";
 import type { Cents, Decision, ExtractedInvoice, Outcome, Policy, PriorInvoice, RunEvent } from "@/domain/types";
 import type { AppRepo, AuditRow, InboxRow, OverrideAction, RunDetail, RunSummary, StoredDocument } from "@/pipeline/ports";
 import { toCents } from "@/domain/money";
-import { needsAttention } from "./pg-repo";
+import { needsAttention } from "@/domain/attention";
 import { SEED, type SeedData } from "../../fixtures/seed-data";
 import { SCENARIOS } from "../../fixtures/scenarios";
 
