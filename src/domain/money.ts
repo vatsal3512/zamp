@@ -1,4 +1,5 @@
-export type Cents = number;
+import type { Cents } from "./types";
+export type { Cents };
 
 const usd = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 
