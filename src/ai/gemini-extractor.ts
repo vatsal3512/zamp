@@ -1,5 +1,5 @@
 import type { GoogleGenAI } from "@google/genai";
-import { callWithFallback, type Attempt } from "./key-pool";
+import { AllProvidersExhaustedError, callWithFallback, type Attempt } from "./key-pool";
 import { extractionJsonSchema, parseExtraction } from "./schema";
 import { extractionPrompt, reextractPrompt } from "./prompt";
 import type { ExtractOptions, ExtractResult, Extractor } from "@/pipeline/ports";
@@ -32,6 +32,8 @@ export class GeminiExtractor implements Extractor {
   }
 
   async extract(pdf: Uint8Array, _sha256: string, opts?: ExtractOptions): Promise<ExtractResult> {
+    if (!this.opts.keys.length) throw new AllProvidersExhaustedError([], "No Gemini API keys configured — add GEMINI_API_KEYS to .env.local");
+    if (!this.opts.models.length) throw new AllProvidersExhaustedError([], "No Gemini models configured — set GEMINI_MODELS");
     const data = Buffer.from(pdf).toString("base64");
     const prompt = opts?.reextract ? reextractPrompt(this.opts.withBoxes, opts.reextract.reason) : extractionPrompt(this.opts.withBoxes);
     const schema = extractionJsonSchema(this.opts.withBoxes);

@@ -100,3 +100,10 @@ describe("CachedExtractor", () => {
     expect(r.cached).toBe(true);
   });
 });
+
+describe("GeminiExtractor configuration", () => {
+  it("says plainly when no API keys are configured", async () => {
+    const ex = new GeminiExtractor({ keys: [], models: ["m1"], withBoxes: false });
+    await expect(ex.extract(PDF, "sha")).rejects.toThrow("No Gemini API keys configured");
+  });
+});

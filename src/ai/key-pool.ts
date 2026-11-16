@@ -8,8 +8,8 @@ export interface Attempt {
 }
 
 export class AllProvidersExhaustedError extends Error {
-  constructor(public attempts: Attempt[]) {
-    super(`All API keys and models are exhausted after ${attempts.length} attempts`);
+  constructor(public attempts: Attempt[], message?: string) {
+    super(message ?? `All API keys and models are exhausted after ${attempts.length} attempts`);
     this.name = "AllProvidersExhaustedError";
   }
 }
