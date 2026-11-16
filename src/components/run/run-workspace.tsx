@@ -49,7 +49,7 @@ export function RunWorkspace({ source }: { source: RunSource }) {
   }
 
   return (
-    <div className="grid h-full grid-cols-[45fr_55fr] overflow-hidden">
+    <div className="grid h-full grid-cols-[minmax(0,45fr)_minmax(0,55fr)] overflow-hidden">
       {documentId || source.kind === "live" ? (
         documentId ? (
           <DocumentCanvas documentId={documentId} envelope={detail?.envelope ?? null} kind={view.kind} focus={focus} highlights={highlights} />
@@ -60,7 +60,7 @@ export function RunWorkspace({ source }: { source: RunSource }) {
         <section className="border-r border-border bg-canvas" />
       )}
 
-      <section className="flex h-full min-h-0 flex-col">
+      <section className="flex h-full min-h-0 min-w-0 flex-col">
         <InspectorHeader view={view} outcome={outcome} detail={detail?.run ?? null} />
         <div className="min-h-0 flex-1 overflow-y-auto">
           {!view.done || logOpen ? (
@@ -108,7 +108,11 @@ function InspectorHeader({ view, outcome, detail }: { view: RunView; outcome: Ou
           {total == null ? "—" : currency === "USD" ? <Money cents={total} /> : `${currency} ${(total / 100).toLocaleString("en-US", { minimumFractionDigits: 2 })}`}
         </div>
       </div>
-      <StatusPill outcome={outcome} size="lg" label={detail?.override ? `Resolved · ${detail.override.action.replace("_", " ")}` : undefined} />
+      <StatusPill
+        outcome={detail?.override && detail.override.action !== "query_sent" ? (detail.override.action === "reject" ? "REJECT" : "APPROVE") : outcome}
+        size="lg"
+        label={detail?.override ? (detail.override.action === "query_sent" ? "Vendor queried" : `Resolved · ${detail.override.action.replace("_", " ")}`) : undefined}
+      />
     </header>
   );
 }
@@ -279,11 +283,19 @@ function MatchGrid({ view }: { view: RunView }) {
         <Eyebrow>3-way match {view.po ? `· ${view.po.poNumber} (${view.po.matchType})` : ""}</Eyebrow>
         {view.grns.length > 0 && <Mono className="text-ink-3">{view.grns.map((g) => g.grnNumber).join(", ")}</Mono>}
       </div>
-      <table className="w-full text-[13px]">
+      <table className="w-full table-fixed text-[13px]">
+        <colgroup>
+          <col />
+          <col className="w-[76px]" />
+          <col className="w-[80px]" />
+          <col className="w-[62px]" />
+          <col className="w-[96px]" />
+          <col className="w-[104px]" />
+        </colgroup>
         <thead>
           <tr className="border-b border-border">
             {["Item", "Ordered", "Received", "Billed", "Unit price", "Variance"].map((h, i) => (
-              <th key={h} className={cn("h-8 px-4 text-[11px] font-medium tracking-wider text-ink-3 uppercase", i === 0 ? "pl-6 text-left" : "text-right", i === 5 && "pr-6")}>{h}</th>
+              <th key={h} className={cn("h-8 px-3 text-[11px] font-medium tracking-wider whitespace-nowrap text-ink-3 uppercase", i === 0 ? "pl-6 text-left" : "text-right", i === 5 && "pr-6")}>{h}</th>
             ))}
           </tr>
         </thead>
@@ -296,18 +308,23 @@ function MatchGrid({ view }: { view: RunView }) {
             return (
               <tr key={l.invoiceLine} className="h-10">
                 <td className={cn("pl-6 pr-4", l.status === "unmatched" && TONE.crimson.cell)}>
-                  <div className="truncate text-ink">{net?.description ?? `Line ${l.invoiceLine + 1}`}</div>
+                  <div className="truncate text-ink" title={net?.description}>{net?.description ?? `Line ${l.invoiceLine + 1}`}</div>
                   {l.status !== "ok" && l.status !== "price" && l.status !== "qty" && <div className="text-[11px] text-ink-3">{l.status === "unmatched" ? "not on the PO" : l.status}</div>}
                 </td>
-                <td className="px-4 text-right tabular text-ink-2">{pl?.quantity ?? "—"}</td>
-                <td className={cn("px-4 text-right tabular text-ink-2", qtyBad && TONE.amber.cell)}>{l.receivedQty ?? "—"}</td>
-                <td className={cn("px-4 text-right tabular text-ink", qtyBad && TONE.amber.cell)}>{l.qty}</td>
-                <td className={cn("px-4 text-right", priceBad && TONE.amber.cell)} title={priceBad ? "R-TOL-01: over the price tolerance" : undefined}>
+                <td className="px-3 text-right tabular text-ink-2">{pl?.quantity ?? "—"}</td>
+                <td className={cn("px-3 text-right tabular text-ink-2", qtyBad && TONE.amber.cell)}>{l.receivedQty ?? "—"}</td>
+                <td className={cn("px-3 text-right tabular text-ink", qtyBad && TONE.amber.cell)}>{l.qty}</td>
+                <td className={cn("px-3 text-right", priceBad && TONE.amber.cell)} title={priceBad ? "R-TOL-01: over the price tolerance" : undefined}>
                   <Money cents={l.invUnitCents} />
                   {l.poUnitCents != null && l.poUnitCents !== l.invUnitCents && <div className="text-[11px] text-ink-3">PO <Money cents={l.poUnitCents} /></div>}
                 </td>
-                <td className={cn("pr-6 pl-4 text-right", priceBad && TONE.amber.cell)}>
-                  {l.priceVarCents == null || l.priceVarCents === 0 ? <span className="text-ink-3">—</span> : <Money cents={l.priceVarCents} signed pct={l.priceVarPct ?? undefined} />}
+                <td className={cn("pr-6 pl-3 text-right", priceBad && TONE.amber.cell)}>
+                  {l.priceVarCents == null || l.priceVarCents === 0 ? <span className="text-ink-3">—</span> : (
+                    <>
+                      <Money cents={l.priceVarCents} signed />
+                      {l.priceVarPct != null && <div className="text-[11px] tabular">{l.priceVarPct >= 0 ? "+" : "−"}{formatPct(Math.abs(l.priceVarPct))}</div>}
+                    </>
+                  )}
                 </td>
               </tr>
             );
@@ -340,6 +357,9 @@ function AuditTrail({ view, detail }: { view: RunView; detail: RunDetail | null 
   const rows = [
     ...(act?.findings ?? []).map((f) => ({ who: "Agent", text: f.text })),
     ...(detail?.override ? [{ who: "Reviewer", text: `${detail.override.action.replace("_", " ")} — “${detail.override.reason}”` }] : []),
+    ...(detail?.override && detail.posted && !view.stages.find((s) => s.id === "act")?.findings.some((f) => f.text.startsWith("Ledger write verified"))
+      ? [{ who: "Agent", text: `Posted to ${detail.poNumber ?? "the PO"} after the reviewer's approval — ledger read-back verified` }]
+      : []),
   ];
   if (!rows.length) return null;
   return (

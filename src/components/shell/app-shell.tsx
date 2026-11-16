@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import { Suspense, useCallback, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { NavRail } from "./nav-rail";
 import { RefreshContext } from "@/lib/use-api";
@@ -9,18 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const path = usePathname();
   const [tick, setTick] = useState(0);
   const bump = useCallback(() => setTick((n) => n + 1), []);
-  const [attention, setAttention] = useState<number | undefined>();
   const [confirm, setConfirm] = useState(false);
-
-  useEffect(() => {
-    fetch("/api/runs", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((b) => setAttention(b?.kpis?.needsAttentionCount))
-      .catch(() => {});
-  }, [path, tick]);
 
   async function reset() {
     setConfirm(false);
@@ -34,7 +24,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <RefreshContext.Provider value={{ tick, bump }}>
       <div className="flex h-screen overflow-hidden bg-white">
-        <NavRail attentionCount={attention} onReset={() => setConfirm(true)} />
+        <Suspense fallback={<div className="w-[208px] shrink-0 border-r border-border bg-white" />}>
+          <NavRail onReset={() => setConfirm(true)} />
+        </Suspense>
         <main className="min-w-0 flex-1 overflow-y-auto">{children}</main>
       </div>
       <Dialog open={confirm} onOpenChange={setConfirm}>

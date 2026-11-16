@@ -1,9 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FileText, Inbox, RotateCcw, ShieldCheck, Store } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRefresh } from "@/lib/use-api";
 
 const NAV = [
   { href: "/", label: "Bills", icon: FileText, match: (p: string) => p === "/" || p.startsWith("/runs") },
@@ -12,8 +14,16 @@ const NAV = [
   { href: "/aop", label: "AOP & controls", icon: ShieldCheck, match: (p: string) => p.startsWith("/aop") },
 ];
 
-export function NavRail({ attentionCount, onReset }: { attentionCount?: number; onReset?: () => void }) {
+export function NavRail({ onReset }: { onReset?: () => void }) {
   const path = usePathname();
+  const { tick } = useRefresh();
+  const [attentionCount, setAttentionCount] = useState<number | undefined>();
+  useEffect(() => {
+    fetch("/api/runs", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((b) => setAttentionCount(b?.kpis?.needsAttentionCount))
+      .catch(() => {});
+  }, [path, tick]);
   return (
     <nav className="flex h-full w-[208px] shrink-0 flex-col border-r border-border bg-white">
       <div className="flex h-12 items-center gap-2 border-b border-border px-4">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { ChevronDown, Minus, Plus } from "lucide-react";
 import type { InboxRow } from "@/pipeline/ports";
@@ -18,10 +18,19 @@ export default function DocumentCanvas({ documentId, envelope, kind, focus, high
   const [pages, setPages] = useState(0);
   const [zoom, setZoom] = useState(1);
   const [showEmail, setShowEmail] = useState(false);
-  const width = Math.round(560 * zoom);
+  const scroller = useRef<HTMLDivElement>(null);
+  const [avail, setAvail] = useState(560);
+  useEffect(() => {
+    const el = scroller.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([e]) => setAvail(Math.max(280, Math.floor(e.contentRect.width) - 48)));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const width = Math.round(Math.min(560, avail) * zoom); // fit the pane, then zoom
 
   return (
-    <section className="flex h-full min-h-0 flex-col border-r border-border bg-canvas">
+    <section className="flex h-full min-h-0 min-w-0 flex-col border-r border-border bg-canvas">
       <div className="flex h-11 shrink-0 items-center gap-3 border-b border-border bg-white px-4 text-xs text-ink-2">
         {envelope ? (
           <button type="button" onClick={() => setShowEmail((v) => !v)} className="flex items-center gap-1 rounded px-1.5 py-1 hover:bg-surface-2">
@@ -47,7 +56,7 @@ export default function DocumentCanvas({ documentId, envelope, kind, focus, high
           <p className="pt-1 text-ink-2">{envelope.body}</p>
         </div>
       )}
-      <div className="min-h-0 flex-1 overflow-auto px-6 py-6">
+      <div ref={scroller} className="min-h-0 flex-1 overflow-auto px-6 py-6">
         <Document
           file={`/api/documents/${documentId}`}
           onLoadSuccess={(d) => setPages(d.numPages)}
