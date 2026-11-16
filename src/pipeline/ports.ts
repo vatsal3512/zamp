@@ -33,3 +33,34 @@ export interface Repo {
   appendEvent(e: RunEvent): Promise<void>;
   finishRun(runId: string, r: { outcome: Outcome | "FAILED"; durationMs: number; model: string | null; cached: boolean }): Promise<void>;
 }
+
+// ---- App-level persistence (dashboard, workspace, AOP, uploads) — implemented by PgRepo and MemoryRepo ----
+export type OverrideAction = "approve" | "sign_off" | "reject" | "query_sent";
+
+export interface RunSummary {
+  id: string; documentId: string; source: "inbox" | "upload" | "rerun"; rerunOf: string | null;
+  outcome: Outcome | "FAILED" | null; startedAt: string; durationMs: number | null; model: string | null; cached: boolean;
+  policyVersion: number; invoiceId: string | null; invoiceNumber: string | null; vendorName: string | null;
+  totalCents: Cents | null; poNumber: string | null; primaryRule: string | null; summary: string | null;
+  override: { action: OverrideAction; reason: string; at: string } | null; posted: boolean;
+}
+export interface RunDetail extends RunSummary { events: RunEvent[]; decision: Decision | null; extracted: ExtractedInvoice | null }
+export interface InboxRow { id: string; scenarioTag: string; from: string; subject: string; body: string; receivedAt: string; documentId: string; filename: string }
+export interface StoredDocument { id: string; filename: string; bytes: Uint8Array }
+export interface AuditRow { id: number; at: string; actor: string; action: string; entity: string; before: unknown; after: unknown }
+
+export interface AppRepo extends Repo {
+  savePolicy(p: Omit<Policy, "version">, actor: string): Promise<Policy>;
+  listRuns(filter?: { needsAttention?: boolean }): Promise<RunSummary[]>;
+  getRun(id: string): Promise<RunDetail | null>;
+  listInbox(): Promise<InboxRow[]>;
+  getDocument(id: string): Promise<StoredDocument | null>;
+  saveDocument(bytes: Uint8Array, filename: string): Promise<{ documentId: string }>;
+  recordOverride(runId: string, action: OverrideAction, reason: string, actor: string): Promise<void>;
+  listAudit(): Promise<AuditRow[]>;
+  listMasterData(): Promise<{ vendors: Vendor[]; purchaseOrders: PurchaseOrder[]; goodsReceipts: GoodsReceipt[] }>;
+  getCache(key: string): Promise<(ExtractedInvoice & { _model: string }) | null>;
+  setCache(key: string, model: string, v: ExtractedInvoice): Promise<void>;
+  putUploadChunk(uploadId: string, idx: number, bytes: Uint8Array): Promise<void>;
+  takeUploadChunks(uploadId: string): Promise<Uint8Array[]>;
+}
