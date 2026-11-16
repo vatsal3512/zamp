@@ -5,6 +5,9 @@ import { INVOICE_DOCS, type InvoiceDoc } from "./invoice-docs";
 const f = <T>(value: T, quote: string | null = value === null ? null : String(value)): Field<T> =>
   ({ value, quote, page: value === null ? null : 1, confidence: value === null ? 0.1 : 0.97 });
 
+const printedDate = (iso: string | null) =>
+  iso ? new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }) : null;
+
 const usd = (n: number) => `$${Math.abs(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 export function docToExtraction(d: InvoiceDoc): ExtractedInvoice {
@@ -17,8 +20,8 @@ export function docToExtraction(d: InvoiceDoc): ExtractedInvoice {
     documentType,
     documentTypeReason: documentType === "invoice" ? "Titled invoice with amounts due" : `Titled ${d.title.toLowerCase()}`,
     invoiceNumber: f(d.invoiceNumber),
-    invoiceDate: f(d.invoiceDate),
-    dueDate: f(d.dueDate),
+    invoiceDate: f(d.invoiceDate, printedDate(d.invoiceDate)),
+    dueDate: f(d.dueDate, printedDate(d.dueDate)),
     vendorName: f(d.vendor.name),
     vendorTaxId: f(d.vendor.taxId ? d.vendor.taxId.replace(/^GSTIN\s*/, "") : null),
     billTo: f(d.billTo.name),
@@ -33,7 +36,7 @@ export function docToExtraction(d: InvoiceDoc): ExtractedInvoice {
     subtotal: f(d.subtotal, d.subtotal === null ? null : usd(d.subtotal)),
     taxTotal: f(taxTotal, taxTotal === null ? null : usd(taxTotal)),
     total: f(d.total, usd(d.total)),
-    bankAccount: f(bank),
+    bankAccount: f(bank, d.bank ? `Account: ${d.bank.account}` : null),
   };
 }
 

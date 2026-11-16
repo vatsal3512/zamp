@@ -84,10 +84,10 @@ export async function runPipeline(input: RunInput, deps: RunDeps): Promise<{ run
 
   try {
     await stage("intake", async () =>
-      ok({ source: input.source }, [{
+      ok({ source: input.source, documentId: input.documentId }, [{
         level: "ok",
         text: input.envelope ? `Email from ${input.envelope.from}: "${input.envelope.subject}"` : input.source === "rerun" ? "Re-run against the current AOP" : "Uploaded document",
-      }]));
+      }]), (r) => r.data);
 
     let halted = false;
     const ins = await stage("inspect", async () => {
