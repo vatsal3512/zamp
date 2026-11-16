@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { ExtractedInvoice } from "@/domain/types";
-import type { ExtractResult, Extractor } from "@/pipeline/ports";
+import type { ExtractOptions, ExtractResult, Extractor } from "@/pipeline/ports";
 import { AllProvidersExhaustedError } from "./key-pool";
 
 export type CachedExtraction = ExtractedInvoice & { _model: string };
@@ -15,7 +15,7 @@ export interface ExtractionStore {
 export class CachedExtractor implements Extractor {
   constructor(private inner: Extractor, private store: ExtractionStore) {}
 
-  async extract(pdf: Uint8Array, sha256: string, opts?: { reextract?: { reason: string }; fresh?: boolean }): Promise<ExtractResult> {
+  async extract(pdf: Uint8Array, sha256: string, opts?: ExtractOptions): Promise<ExtractResult> {
     const key = opts?.reextract ? `${sha256}:reextract` : sha256;
     const hit = async (): Promise<ExtractResult | null> => {
       const c = await this.store.get(key);

@@ -5,11 +5,14 @@ import type {
 
 export interface ExtractResult { invoice: ExtractedInvoice; model: string; cached: boolean; attempts: Attempt[] }
 
+export interface ExtractOptions { reextract?: { reason: string }; fresh?: boolean; onRetry?: (a: Attempt) => void }
+
 export interface Extractor {
-  extract(pdf: Uint8Array, sha256: string, opts?: { reextract?: { reason: string }; fresh?: boolean }): Promise<ExtractResult>;
+  extract(pdf: Uint8Array, sha256: string, opts?: ExtractOptions): Promise<ExtractResult>;
 }
 
-export type Emit = (e: Omit<RunEvent, "runId" | "seq" | "at">) => void;
+/** Receives every run event as it happens (already numbered and timestamped). Must not be relied on to throw. */
+export type Emit = (e: RunEvent) => void;
 
 export interface Repo {
   getPolicy(): Promise<Policy>;
@@ -21,7 +24,7 @@ export interface Repo {
   /** Invoices with outcome APPROVE | ROUTE_FOR_APPROVAL only. */
   findAcceptedInvoiceByHash(sha256: string): Promise<PriorInvoice | null>;
   saveInvoiceResult(r: {
-    runId: string; documentId: string; vendorId: string | null; poNumber: string | null;
+    runId: string; documentId: string; sha256: string; vendorId: string | null; poNumber: string | null;
     extracted: ExtractedInvoice | null; decision: Decision;
   }): Promise<{ invoiceId: string }>;
   postToLedger(poNumber: string, invoiceId: string, amountCents: Cents): Promise<{ beforeCents: Cents; afterCents: Cents }>;

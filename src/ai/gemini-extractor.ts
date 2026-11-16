@@ -2,7 +2,7 @@ import type { GoogleGenAI } from "@google/genai";
 import { callWithFallback, type Attempt } from "./key-pool";
 import { extractionJsonSchema, parseExtraction } from "./schema";
 import { extractionPrompt, reextractPrompt } from "./prompt";
-import type { ExtractResult, Extractor } from "@/pipeline/ports";
+import type { ExtractOptions, ExtractResult, Extractor } from "@/pipeline/ports";
 
 export class ExtractionInvalidError extends Error {
   constructor(public detail: string) {
@@ -31,7 +31,7 @@ export class GeminiExtractor implements Extractor {
     return new GoogleGenAI({ apiKey: key });
   }
 
-  async extract(pdf: Uint8Array, _sha256: string, opts?: { reextract?: { reason: string } }): Promise<ExtractResult> {
+  async extract(pdf: Uint8Array, _sha256: string, opts?: ExtractOptions): Promise<ExtractResult> {
     const data = Buffer.from(pdf).toString("base64");
     const prompt = opts?.reextract ? reextractPrompt(this.opts.withBoxes, opts.reextract.reason) : extractionPrompt(this.opts.withBoxes);
     const schema = extractionJsonSchema(this.opts.withBoxes);
@@ -55,7 +55,7 @@ export class GeminiExtractor implements Extractor {
         }
         throw new ExtractionInvalidError(lastError);
       },
-      { onRetry: this.opts.onRetry, sleep: this.opts.sleep },
+      { onRetry: (a) => { this.opts.onRetry?.(a); opts?.onRetry?.(a); }, sleep: this.opts.sleep },
     );
     return { invoice: value, model, cached: false, attempts };
   }

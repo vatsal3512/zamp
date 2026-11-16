@@ -117,9 +117,15 @@ export function match(lines: NetLine[], totalCents: Cents, po: PurchaseOrder, gr
     findings.push({ level: "error", text: `No goods receipt recorded against ${po.poNumber}` });
   } else if (threeWay) findings.push({ level: "ok", text: `Goods receipt on file (${grns.map((g) => g.grnNumber).join(", ")})` });
 
-  // 5. Cumulative billing against the PO (pre-tax, freight excluded)
+  // 5. Cumulative PO consumption, measured at contracted PO prices (price drift is the price tolerance's job).
+  //    invoiceSubtotalCents = what is actually billed (pre-tax, freight excluded) — that is what gets posted.
   const invoiceSubtotalCents = lines.filter((l) => l.lineType !== "freight").reduce((s, l) => s + l.amountCents, 0);
-  const cumulativeAfterCents = po.billedToDateCents + invoiceSubtotalCents;
+  const consumptionCents = lines.reduce((s, l) => {
+    const p = mapped.get(l.index);
+    if (p) return s + l.quantity * p.unitPriceCents;
+    return l.lineType === "freight" || l.lineType === "discount" || l.amountCents < 0 ? s : s + l.amountCents;
+  }, 0);
+  const cumulativeAfterCents = po.billedToDateCents + consumptionCents;
   const limit = Math.round(po.totalCents * (1 + policy.poOverrunPct));
   const overrunCents = Math.max(0, cumulativeAfterCents - po.totalCents);
   const overrunPct = overrunCents / po.totalCents;

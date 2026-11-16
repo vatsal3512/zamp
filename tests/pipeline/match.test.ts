@@ -46,6 +46,13 @@ describe("match — prices and cumulative billing", () => {
     expect(rules(run(pv, po("PO-2052"), { ...DEFAULT_POLICY, priceTolPct: 0.05, priceTolAbsCents: 4000 }))).toContain("R-TOL-01");
   });
 
+  it("does not count a tolerated price increase as a PO overrun", () => {
+    const r = run(pv, po("PO-2052"), { ...DEFAULT_POLICY, priceTolPct: 0.05 });
+    expect(rules(r)).not.toContain("R-PO-03");
+    expect(r.data.cumulativeAfterCents).toBe(100_000); // PO consumed at contracted prices
+    expect(r.data.invoiceSubtotalCents).toBe(104_200); // what is actually billed and posted
+  });
+
   it("never lets price tolerance cover a PO overrun", () => {
     expect(rules(run(ec1, po("PO-2041"), { ...DEFAULT_POLICY, priceTolPct: 0.05 }))).toContain("R-PO-03");
   });
