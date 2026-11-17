@@ -22,8 +22,8 @@ describe("validate — document gates", () => {
     const stmt = run(makeInvoice({ documentType: "statement" }));
     expect(stmt.hits[0]).toMatchObject({ rule: "R-DOC-02", outcome: "REJECT" });
     expect(stmt.halt).toBe(true);
-    const guide = run(extractionFor("guide"));
-    expect(guide.hits[0]).toMatchObject({ rule: "R-DOC-02", outcome: "REJECT", facts: { reason: "Hiring case-study guide, not a bill" } });
+    const notice = run(extractionFor("notice"));
+    expect(notice.hits[0]).toMatchObject({ rule: "R-DOC-02", outcome: "REJECT", facts: { reason: "Informational vendor letter, not a request for payment" } });
   });
 
   it("holds credit notes instead of rejecting them", () => {

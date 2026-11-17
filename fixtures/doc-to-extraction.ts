@@ -43,16 +43,16 @@ export function docToExtraction(d: InvoiceDoc): ExtractedInvoice {
   };
 }
 
-/** What a reader returns for the Zamp candidate guide: not an invoice, nothing to extract. */
-export const GUIDE_EXTRACTION: ExtractedInvoice = {
-  documentType: "other", documentTypeReason: "Hiring case-study guide, not a bill",
+/** What a reader returns for the vendor's holiday notice: a letter, not a bill — nothing to extract. */
+export const NOTICE_EXTRACTION: ExtractedInvoice = {
+  documentType: "other", documentTypeReason: "Informational vendor letter, not a request for payment",
   invoiceNumber: f(null), invoiceDate: f(null), dueDate: f(null), vendorName: f(null), vendorTaxId: f(null),
   billTo: f(null), poNumber: f(null), currency: f(null), servicePeriod: f(null), taxInclusive: null, lines: [],
   subtotal: f(null), taxTotal: f(null), total: f(null), bankAccount: f(null),
 };
 
 export function extractionFor(scenarioId: string): ExtractedInvoice {
-  if (scenarioId === "guide") return structuredClone(GUIDE_EXTRACTION);
+  if (scenarioId === "notice") return structuredClone(NOTICE_EXTRACTION);
   const d = INVOICE_DOCS.find((x) => x.scenarioId === scenarioId);
   if (!d) throw new Error(`No fixture document for ${scenarioId}`);
   return docToExtraction(d);

@@ -8,7 +8,7 @@ const dir = path.resolve(__dirname, "../../fixtures/pdfs");
 
 // What each digital PDF must visibly contain (invoice number when there is one).
 const marker = (id: string, invoiceNumber: string | null) =>
-  ({ stmt: "STATEMENT", guide: "Case Study", missing: "Soylent" } as Record<string, string>)[id] ?? invoiceNumber!;
+  ({ stmt: "STATEMENT", notice: "holiday closure", missing: "Soylent" } as Record<string, string>)[id] ?? invoiceNumber!;
 
 async function textOf(file: string) {
   const pdf = await getDocumentProxy(new Uint8Array(readFileSync(path.join(dir, file))));

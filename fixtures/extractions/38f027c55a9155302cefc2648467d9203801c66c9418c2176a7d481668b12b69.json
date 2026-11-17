@@ -1,6 +1,6 @@
 {
   "documentType": "other",
-  "documentTypeReason": "This is a candidate guide for a job application case study.",
+  "documentTypeReason": "This is a notice regarding holiday closure and year-end billing cut-off.",
   "invoiceNumber": {
     "value": null,
     "quote": null,
@@ -8,10 +8,10 @@
     "confidence": 0
   },
   "invoiceDate": {
-    "value": null,
-    "quote": null,
-    "page": null,
-    "confidence": 0
+    "value": "2026-11-14",
+    "quote": "November 14, 2026",
+    "page": 1,
+    "confidence": 1
   },
   "dueDate": {
     "value": null,
@@ -20,10 +20,10 @@
     "confidence": 0
   },
   "vendorName": {
-    "value": "zamp",
-    "quote": "zamp",
+    "value": "UMBRELLA PRINT CO.",
+    "quote": "UMBRELLA PRINT CO.",
     "page": 1,
-    "confidence": 0.9
+    "confidence": 1
   },
   "vendorTaxId": {
     "value": null,
@@ -32,10 +32,10 @@
     "confidence": 0
   },
   "billTo": {
-    "value": null,
-    "quote": null,
-    "page": null,
-    "confidence": 0
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
   },
   "poNumber": {
     "value": null,

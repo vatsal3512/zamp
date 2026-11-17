@@ -6,7 +6,7 @@
 2. Check the ledger strip: **Eval suite 21/21** in green. If not, stop and run `npx tsx scripts/eval.ts`.
 3. Warm the app: open one stored run and the AOP page once (first loads are slower).
 4. Browser at 1440×900 (or 1280×720) and **zoom 110%** for recording. Close other tabs; turn off notifications.
-5. Have these files on the desktop for "upload anything": `fixtures/pdfs/zamp-candidate-guide.pdf`, `fixtures/pdfs/acme-AC-5531-photo.jpg`.
+5. Have these files on the desktop for "upload anything": `fixtures/pdfs/zamp-candidate-guide.pdf` (kept out of the seeded inbox, so it is never public on the deployed site), `fixtures/pdfs/acme-AC-5531-photo.jpg`.
 
 ## Run order (5-minute video)
 

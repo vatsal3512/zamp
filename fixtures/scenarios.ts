@@ -72,8 +72,8 @@ export const SCENARIOS: Scenario[] = [
   { id: "missing", tag: "Missing fields", title: "No invoice number or date", file: "soylent-nofields.pdf", kind: "digital", launcher: false,
     envelope: env("billing@soylentcatering.com", "Catering invoice", "Invoice for the all-hands lunch attached.", "2026-11-12T12:45:00Z"),
     expected: { outcome: "HOLD", rules: ["R-EXT-01"] }, truth: inv(null, 734_000, "PO-2090", "Soylent Catering", 3) },
-  { id: "guide", tag: "Not an invoice", title: "The Zamp candidate guide", file: "zamp-candidate-guide.pdf", kind: "digital", launcher: false,
-    envelope: env("hiring@zamp.ai", "ASA Case Study — Candidate Guide", "Everything you need to know to do your best work.", "2026-11-16T05:00:00Z"),
+  { id: "notice", tag: "Not an invoice", title: "Vendor holiday-closure notice", file: "umbrella-holiday-notice.pdf", kind: "digital", launcher: false,
+    envelope: env("ar@umbrellaprint.com", "Holiday closure & year-end billing cut-off", "Please see the attached notice about our December schedule.", "2026-11-14T15:10:00Z"),
     expected: { outcome: "REJECT", rules: ["R-DOC-02"] }, truth: inv(null, null, null, null, 0, "other") },
 ];
 

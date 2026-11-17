@@ -1,19 +1,21 @@
 /**
  * Generates fixtures/pdfs/* from fixtures/invoice-docs.ts — run with: npx tsx scripts/generate-fixtures.ts
  * Digital → Chromium print-to-PDF (text layer). Scanned → screenshot → sharp (rotate, noise, blur) → image-only PDF.
+ * --only=<scenarioId> regenerates one file; regenerating others changes their hashes and orphans recorded extractions.
  */
 process.env.PLAYWRIGHT_BROWSERS_PATH ??= "0"; // browsers live in node_modules (D:), not the user profile
 
-import { copyFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
 import { PDFDocument } from "pdf-lib";
 import { INVOICE_DOCS } from "../fixtures/invoice-docs";
 import { SCENARIOS } from "../fixtures/scenarios";
 import { renderDoc } from "../fixtures/templates/render";
+import { renderNotice } from "../fixtures/templates/notice";
 
 const OUT = path.resolve("fixtures/pdfs");
-const GUIDE_SRC = path.resolve("ASA Case Study — Candidate Guide.pdf");
+const ONLY = process.argv.find((a) => a.startsWith("--only="))?.split("=")[1];
 const LETTER = { width: 816, height: 1056 }; // CSS px at 96 dpi
 const SCALE = 150 / 96; // 150 dpi screenshots
 
@@ -46,10 +48,12 @@ async function main() {
   const page = await browser.newPage({ viewport: LETTER, deviceScaleFactor: SCALE });
 
   for (const s of SCENARIOS) {
+    if (ONLY && s.id !== ONLY) continue;
     const out = path.join(OUT, s.file);
-    if (s.id === "guide") {
-      copyFileSync(GUIDE_SRC, out);
-      console.log(`copied  ${s.file}`);
+    if (s.id === "notice") {
+      await page.setContent(renderNotice(), { waitUntil: "load" });
+      writeFileSync(out, await page.pdf({ format: "Letter", printBackground: true }));
+      console.log(`wrote   ${s.file}`);
       continue;
     }
     const doc = INVOICE_DOCS.find((d) => d.scenarioId === s.id);
