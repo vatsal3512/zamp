@@ -43,3 +43,6 @@ ASA Case Study — Candidate Guide.pdf
 .superpowers/
 !.env.example
 .neon
+
+.vercel
+.env*

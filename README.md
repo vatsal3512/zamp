@@ -5,6 +5,8 @@ upload; the agent reads it, checks it against the vendor master, purchase orders
 **approve and post**, **route for sign-off**, **hold with one specific question**, or **reject**. Every step
 streams live to a run view, and every decision can be traced to a rule and the evidence on the page.
 
+**Live demo:** https://zamp-nine.vercel.app (use *Reset demo data* in the left rail to start fresh)
+
 **The core design choice: AI reads, rules decide.** Gemini does one job: turn the document into structured fields,
 each with a verbatim quote from the page. A deterministic rules engine (26 rules) makes the decision, and the
 explanation, the question and any vendor email are templated from the same rule facts. So the explanation can't

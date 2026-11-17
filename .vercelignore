@@ -1,0 +1,15 @@
+# Never upload secrets or local tooling
+.env*
+!.env.example
+.superpowers
+.neon
+.next
+node_modules
+
+# Not needed at runtime (the deployed app reads documents and extractions from Postgres)
+*.pdf
+fixtures/pdfs
+fixtures/extractions
+fixtures/mock-runs.json
+tests
+docs
