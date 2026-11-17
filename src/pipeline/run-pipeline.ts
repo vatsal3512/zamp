@@ -187,7 +187,7 @@ export async function runPipeline(input: RunInput, deps: RunDeps): Promise<{ run
     if (!halted && invoice && vendor) {
       const v: Vendor = vendor;
       const priors = (await repo.getPriorInvoices(v.id)).filter((p) => !(input.source === "rerun" && p.sha256 === sha));
-      const dr = await stage("duplicate", async () => duplicateCheck(invoice!, v.id, priors, policy), (r) => ({ best: r.data.best }));
+      const dr = await stage("duplicate", async () => duplicateCheck(invoice!, v.id, priors, policy, po?.poNumber ?? null), (r) => ({ best: r.data.best }));
       hits.push(...dr.hits);
     }
 

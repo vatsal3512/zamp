@@ -52,9 +52,9 @@ export const GOODS_RECEIPTS: GoodsReceipt[] = [
 ];
 
 export const PRIOR_INVOICES: PriorInvoice[] = [
-  { invoiceId: "inv-prior-ini-0901", vendorId: "V-INITECH", invoiceNumber: "INI-0901", invoiceDate: "2026-09-05", totalCents: 1_600_000, servicePeriod: "2026-08", lineDescriptions: ["Managed support hours"], outcome: "APPROVE", sha256: "0".repeat(63) + "1" },
-  { invoiceId: "inv-prior-ini-1001", vendorId: "V-INITECH", invoiceNumber: "INI-1001", invoiceDate: "2026-10-05", totalCents: 1_600_000, servicePeriod: "2026-09", lineDescriptions: ["Managed support hours"], outcome: "APPROVE", sha256: "0".repeat(63) + "2" },
-  { invoiceId: "inv-prior-inv-10422", vendorId: "V-GLOBEX", invoiceNumber: "INV-10422", invoiceDate: "2026-10-03", totalCents: 240_000, servicePeriod: "2026-10", lineDescriptions: ["Monthly platform subscription"], outcome: "APPROVE", sha256: "0".repeat(63) + "3" },
+  { invoiceId: "inv-prior-ini-0901", vendorId: "V-INITECH", invoiceNumber: "INI-0901", invoiceDate: "2026-09-05", totalCents: 1_600_000, servicePeriod: "2026-08", lineDescriptions: ["Managed support hours"], outcome: "APPROVE", sha256: "0".repeat(63) + "1", poNumber: "PO-2041" },
+  { invoiceId: "inv-prior-ini-1001", vendorId: "V-INITECH", invoiceNumber: "INI-1001", invoiceDate: "2026-10-05", totalCents: 1_600_000, servicePeriod: "2026-09", lineDescriptions: ["Managed support hours"], outcome: "APPROVE", sha256: "0".repeat(63) + "2", poNumber: "PO-2041" },
+  { invoiceId: "inv-prior-inv-10422", vendorId: "V-GLOBEX", invoiceNumber: "INV-10422", invoiceDate: "2026-10-03", totalCents: 240_000, servicePeriod: "2026-10", lineDescriptions: ["Monthly platform subscription"], outcome: "APPROVE", sha256: "0".repeat(63) + "3", poNumber: "PO-2063" },
 ];
 
 export interface SeedData {

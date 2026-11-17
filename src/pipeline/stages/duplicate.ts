@@ -11,8 +11,11 @@ const round3 = (n: number) => Math.round(n * 1000) / 1000;
  * score = 1 if normalised invoice numbers are equal, else
  *   0.4·similarity(numbers) + 0.3·(amount within 1%) + 0.2·line overlap + 0.1·date proximity.
  * Recurring guard: both have a service period and they differ → not a duplicate.
+ * Separate-order guard: both were matched to purchase orders and the POs differ → not a duplicate. A resend bills
+ * the same order; double-billing one PO is caught by the PO-overrun check instead.
+ * An identical invoice number (score 1) is never excused by either guard.
  */
-export function duplicateCheck(x: ExtractedInvoice, vendorId: string, priors: PriorInvoice[], policy: Policy): StageResult<DuplicateData> {
+export function duplicateCheck(x: ExtractedInvoice, vendorId: string, priors: PriorInvoice[], policy: Policy, poNumber: string | null = null): StageResult<DuplicateData> {
   const hits: RuleHit[] = [];
   const findings: Finding[] = [];
   const num = normalizeInvoiceNumber(x.invoiceNumber.value ?? "");
@@ -36,6 +39,10 @@ export function duplicateCheck(x: ExtractedInvoice, vendorId: string, priors: Pr
     if (score < 1 && x.servicePeriod.value && p.servicePeriod && x.servicePeriod.value !== p.servicePeriod) {
       recurringGuard = true;
       findings.push({ level: "info", text: `Resembles ${p.invoiceNumber} (score ${round3(score).toFixed(2)}) but bills a different service period (${x.servicePeriod.value} vs ${p.servicePeriod}) — not a duplicate` });
+      score = 0;
+    } else if (score < 1 && poNumber && p.poNumber && poNumber !== p.poNumber) {
+      recurringGuard = true;
+      findings.push({ level: "info", text: `Resembles ${p.invoiceNumber} (score ${round3(score).toFixed(2)}) but bills a different purchase order (${poNumber} vs ${p.poNumber}) — a separate order, not a resend` });
       score = 0;
     }
     score = round3(score);

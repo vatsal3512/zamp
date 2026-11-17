@@ -21,6 +21,20 @@ describe("duplicateCheck", () => {
     expect(r.findings.some((f) => f.level === "info" && /different service period/.test(f.text))).toBe(true);
   });
 
+  it("does not treat a near-identical order on a different PO as a duplicate", () => {
+    const acmePrior = { invoiceId: "inv-1", vendorId: "V-ACME", invoiceNumber: "AC-5531", invoiceDate: "2026-11-08", totalCents: 125_559,
+      servicePeriod: null, lineDescriptions: ["A4 copy paper, 10-ream case", "Ballpoint pens, box of 50", "Desk organizer"],
+      outcome: "APPROVE" as const, sha256: "x", poNumber: "PO-2031" };
+    const x = extractionFor("taxincl"); // AC-5560: same items and total within 1%, but billed against PO-2033
+    expect(duplicateCheck(x, "V-ACME", [acmePrior], DEFAULT_POLICY, null).hits[0]?.rule).toBe("R-DUP-01"); // without the PO it looks like a resend
+    const r = duplicateCheck(x, "V-ACME", [acmePrior], DEFAULT_POLICY, "PO-2033");
+    expect(r.hits).toEqual([]);
+    expect(r.findings.some((f) => /different purchase order \(PO-2033 vs PO-2031\)/.test(f.text))).toBe(true);
+    // the same PO, or an identical invoice number, is never excused
+    expect(duplicateCheck(x, "V-ACME", [acmePrior], DEFAULT_POLICY, "PO-2031").hits[0]?.rule).toBe("R-DUP-01");
+    expect(duplicateCheck(x, "V-ACME", [{ ...acmePrior, invoiceNumber: "AC-5560" }], DEFAULT_POLICY, "PO-2033").hits[0]?.rule).toBe("R-DUP-01");
+  });
+
   it("would have held EC-3b without the recurring guard", () => {
     const priors = globexPriors.map((p) => ({ ...p, servicePeriod: null }));
     const r = duplicateCheck({ ...extractionFor("ec3b"), servicePeriod: fld(null) }, "V-GLOBEX", priors, DEFAULT_POLICY);

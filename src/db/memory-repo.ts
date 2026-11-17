@@ -148,6 +148,7 @@ export class MemoryRepo implements AppRepo {
         invoiceId: id, vendorId: r.vendorId, invoiceNumber: x.invoiceNumber.value ?? "", invoiceDate: x.invoiceDate.value ?? "",
         totalCents: x.total.value === null ? 0 : toCents(x.total.value), servicePeriod: x.servicePeriod.value,
         lineDescriptions: x.lines.map((l) => l.description ?? "").filter(Boolean), outcome: r.decision.outcome, sha256: r.sha256,
+        poNumber: r.poNumber ?? null,
       };
       this.state.priorInvoices.push(prior);
     }

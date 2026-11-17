@@ -75,6 +75,7 @@ export class PgRepo implements AppRepo {
       await this.db.insert(t.priorInvoices).values({
         invoiceId: id, vendorId: r.vendorId, invoiceNumber: x.invoiceNumber.value ?? "", invoiceDate: x.invoiceDate.value ?? "",
         totalCents: totalCents ?? 0, servicePeriod: x.servicePeriod.value, lineDescriptions, outcome: r.decision.outcome, sha256: r.sha256,
+        poNumber: r.poNumber ?? null,
       });
     }
     return { invoiceId: id };

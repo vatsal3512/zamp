@@ -115,6 +115,19 @@ describe("runPipeline — re-runs, duplicates and re-extraction", () => {
   });
 });
 
+describe("runPipeline — the demo inbox processed in order on one database", () => {
+  it("decides every scenario as expected when all 21 run back to back", async () => {
+    const repo = new MemoryRepo();
+    const wrong: string[] = [];
+    for (const s of SCENARIOS) {
+      const r = await run(s.id, {}, repo);
+      const rules = r.decision?.hits.map((h) => h.rule) ?? [];
+      if (r.decision?.outcome !== s.expected.outcome || !s.expected.rules.every((x) => rules.includes(x))) wrong.push(`${s.id}: ${r.decision?.outcome} ${rules.join(" ")}`);
+    }
+    expect(wrong).toEqual([]);
+  });
+});
+
 describe("runPipeline — failure handling and events", () => {
   it("ends cleanly when every key and model is exhausted", async () => {
     const ex: Extractor = { extract: async () => { throw new AllProvidersExhaustedError([]); } };

@@ -55,7 +55,6 @@ export function BillsView({ initialTab = "all" }: { initialTab?: "all" | "attent
     <div className="min-h-full bg-white">
       <header className="flex h-12 items-center justify-between border-b border-border px-5">
         <h1 className="text-[15px] font-semibold text-ink">Bills</h1>
-        <div className="text-xs text-ink-3">AI reads the invoice · rules decide · a person answers one question when it matters</div>
       </header>
 
       <LedgerStrip

@@ -1,0 +1,1 @@
+ALTER TABLE "prior_invoices" ADD COLUMN "po_number" text;

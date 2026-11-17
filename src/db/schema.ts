@@ -111,6 +111,7 @@ export const priorInvoices = pgTable("prior_invoices", {
   lineDescriptions: jsonb("line_descriptions").$type<string[]>().notNull(),
   outcome: text("outcome").notNull(),
   sha256: text("sha256").notNull(),
+  poNumber: text("po_number"),
 });
 
 export const auditLog = pgTable("audit_log", {

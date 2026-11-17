@@ -9,7 +9,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   title: "Northwind AP — Invoice Agent",
-  description: "AI reads the invoice. Rules make the decision. A human answers one question when it matters.",
+  description: "Accounts-payable invoice processing, from PDF to decision.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

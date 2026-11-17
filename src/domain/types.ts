@@ -54,6 +54,7 @@ export interface GoodsReceipt { grnNumber: string; poNumber: string; receivedAt:
 export interface PriorInvoice {
   invoiceId: string; vendorId: string; invoiceNumber: string; invoiceDate: string; totalCents: Cents;
   servicePeriod: string | null; lineDescriptions: string[]; outcome: Outcome; sha256: string;
+  poNumber?: string | null; // the PO it was matched to; a different PO means a separate order
 }
 export interface Policy {
   version: number; priceTolPct: number; priceTolAbsCents: Cents; poOverrunPct: number; freightCapCents: Cents;
