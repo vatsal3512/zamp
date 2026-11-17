@@ -72,7 +72,7 @@ export function BillsView({ initialTab = "all" }: { initialTab?: "all" | "attent
 
       <LedgerStrip
         items={[
-          { label: "Processed", value: k?.processed ?? "—", sub: k ? `avg ${k.avgSeconds.toFixed(1)} s${k.liveRuns ? "" : " · cached"} · ~${k.aiCostPerInvoiceUsd.toFixed(3)}/inv vs ~${k.manualBenchmarkUsd.toFixed(2)} manual` : " " },
+          { label: "Processed", value: k?.processed ?? "—", sub: k ? `avg ${k.avgSeconds.toFixed(1)} s${k.liveRuns ? "" : " · cached"} · ~$${k.aiCostPerInvoiceUsd.toFixed(3)}/inv vs ~$${k.manualBenchmarkUsd.toFixed(2)} manual` : " " },
           { label: "Straight-through rate", value: k ? formatPct(k.straightThroughPct, 0) : "—", sub: "approved with no human touch" },
           { label: "Needs attention", value: k?.needsAttentionCount ?? "—", sub: k ? `${formatUsd(k.heldCents)} held` : " ", tone: k?.needsAttentionCount ? "amber" : undefined },
           { label: "Fraud & duplicates blocked", value: k ? formatUsd(k.protectedCents) : "—", sub: "bank changes · spoofed senders · duplicates" },
