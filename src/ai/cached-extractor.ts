@@ -1,5 +1,3 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import path from "node:path";
 import type { ExtractedInvoice } from "@/domain/types";
 import type { ExtractOptions, ExtractResult, Extractor } from "@/pipeline/ports";
 import { AllProvidersExhaustedError } from "./key-pool";
@@ -40,22 +38,4 @@ export class CachedExtractor implements Extractor {
       throw e;
     }
   }
-}
-
-/** JSON files on disk — used by eval and bake-off scripts. */
-export function fileCacheStore(dir = "fixtures/extractions"): ExtractionStore {
-  const file = (key: string) => path.resolve(dir, `${key.replace(/:/g, ".")}.json`);
-  return {
-    async get(key) {
-      try {
-        return JSON.parse(await readFile(file(key), "utf8")) as CachedExtraction;
-      } catch {
-        return null;
-      }
-    },
-    async set(key, model, v) {
-      await mkdir(path.resolve(dir), { recursive: true });
-      await writeFile(file(key), JSON.stringify({ ...v, _model: model }, null, 2));
-    },
-  };
 }

@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { runPipeline, type RunInput } from "@/pipeline/run-pipeline";
 import { runScenario } from "@/pipeline/eval";
+import { pdfFromDisk } from "@/node/disk";
 import { MemoryRepo } from "@/db/memory-repo";
 import { AllProvidersExhaustedError } from "@/ai/key-pool";
 import type { Extractor } from "@/pipeline/ports";
@@ -40,7 +41,7 @@ async function run(id: string, opts: Partial<RunInput> = {}, repo = new MemoryRe
 
 describe("runPipeline — every scenario", () => {
   it.each(SCENARIOS.map((s) => [s.id, s] as const))("%s → expected outcome and rules", async (_id, s) => {
-    const r = await runScenario(s, fixtureExtractor());
+    const r = await runScenario(s, fixtureExtractor(), pdfFromDisk());
     expect(r.actual).toBe(s.expected.outcome);
     expect(r.rules).toEqual(expect.arrayContaining(s.expected.rules));
   });

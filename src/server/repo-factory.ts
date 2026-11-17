@@ -22,7 +22,7 @@ export async function getRepo(): Promise<AppRepo> {
 export async function resetDemo(): Promise<void> {
   const repo = await getRepo();
   if (repo instanceof MemoryRepo) return repo.reset();
-  const [{ getDb }, { resetDemoState }] = await Promise.all([import("@/db/client"), import("@/db/seed")]);
+  const [{ getDb }, { resetDemoState }] = await Promise.all([import("@/db/client"), import("@/db/demo-state")]);
   await resetDemoState(getDb());
 }
 
@@ -33,10 +33,10 @@ export const dbCacheStore = (repo: AppRepo): ExtractionStore => ({ get: (k) => r
  * Unknown files fail as unreadable. Labelled "fixtures (offline)" everywhere it appears — never used in production.
  */
 async function fixtureExtractor(): Promise<Extractor> {
-  const [{ createHash }, { readFileSync }, { SCENARIOS }, { extractionFor }, { ExtractionInvalidError }] = await Promise.all([
-    import("node:crypto"), import("node:fs"), import("../../fixtures/scenarios"), import("../../fixtures/doc-to-extraction"), import("@/ai/gemini-extractor"),
+  const [{ createHash }, { readFileSync }, { default: path }, { SCENARIOS }, { extractionFor }, { ExtractionInvalidError }] = await Promise.all([
+    import("node:crypto"), import("node:fs"), import("node:path"), import("../../fixtures/scenarios"), import("../../fixtures/doc-to-extraction"), import("@/ai/gemini-extractor"),
   ]);
-  const bySha = new Map(SCENARIOS.map((s) => [createHash("sha256").update(readFileSync(`fixtures/pdfs/${s.file}`)).digest("hex"), s.id]));
+  const bySha = new Map(SCENARIOS.map((s) => [createHash("sha256").update(readFileSync(path.join(/*turbopackIgnore: true*/ process.cwd(), "fixtures/pdfs", s.file))).digest("hex"), s.id]));
   return {
     extract: async (_pdf, sha) => {
       const id = bySha.get(sha);

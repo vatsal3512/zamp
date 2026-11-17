@@ -95,7 +95,7 @@ export class MemoryRepo implements AppRepo {
     if (known) return known;
     const s = SCENARIOS.find((x) => `doc-${x.id}` === id);
     if (!s) return null;
-    const doc = { id, filename: s.file, bytes: new Uint8Array(readFileSync(path.join(this.root, "fixtures/pdfs", s.file))) };
+    const doc = { id, filename: s.file, bytes: new Uint8Array(readFileSync(path.join(/*turbopackIgnore: true*/ this.root, "fixtures/pdfs", s.file))) };
     this.documents.set(id, doc);
     return doc;
   }

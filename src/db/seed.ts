@@ -3,22 +3,16 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import * as t from "./schema";
 import type { Db } from "./pg-repo";
-import { SEED } from "../../fixtures/seed-data";
+import { insertSeedRows } from "./demo-state";
 import { SCENARIOS } from "../../fixtures/scenarios";
 import type { ExtractedInvoice } from "@/domain/types";
+
+export { resetDemoState } from "./demo-state";
 
 const ALL_TABLES = [
   t.runEvents, t.runs, t.invoices, t.priorInvoices, t.auditLog, t.policies, t.inboxMessages, t.documents,
   t.goodsReceipts, t.purchaseOrders, t.vendors, t.uploadChunks, t.extractionCache,
 ];
-
-const DEMO_STATE_TABLES = [t.runEvents, t.runs, t.invoices, t.priorInvoices, t.auditLog, t.policies, t.goodsReceipts, t.purchaseOrders, t.vendors, t.uploadChunks];
-
-/** "Reset demo data": restore procurement state, policy and history; keep documents, inbox and the extraction cache. No file I/O. */
-export async function resetDemoState(db: Db) {
-  for (const table of DEMO_STATE_TABLES) await db.delete(table);
-  await insertSeedRows(db);
-}
 
 /** Truncate everything and load the demo procurement system, inbox PDFs and (optionally) cached extractions. */
 export async function seedDatabase(db: Db, opts: { withCache: boolean; root?: string }) {
@@ -27,15 +21,6 @@ export async function seedDatabase(db: Db, opts: { withCache: boolean; root?: st
   await insertSeedRows(db);
   await insertDocuments(db, root);
   if (opts.withCache) await insertCache(db, root);
-}
-
-async function insertSeedRows(db: Db) {
-  await db.insert(t.vendors).values(SEED.vendors);
-  await db.insert(t.purchaseOrders).values(SEED.purchaseOrders);
-  await db.insert(t.goodsReceipts).values(SEED.goodsReceipts);
-  await db.insert(t.priorInvoices).values(SEED.priorInvoices);
-  const { version, ...body } = SEED.policy;
-  await db.insert(t.policies).values({ version, body });
 }
 
 async function insertDocuments(db: Db, root: string) {

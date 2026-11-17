@@ -1,5 +1,3 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
 import type { Outcome, RuleId } from "@/domain/types";
 import type { Extractor } from "./ports";
 import { runPipeline } from "./run-pipeline";
@@ -11,9 +9,8 @@ export interface EvalResult { id: string; tag: string; expected: Outcome; actual
 
 /** Runs one scenario end-to-end against a fresh in-memory procurement system. */
 export type PdfLoader = (s: Scenario) => Promise<Uint8Array>;
-const fromDisk = (pdfDir = "fixtures/pdfs"): PdfLoader => async (s) => new Uint8Array(await readFile(path.resolve(process.cwd(), pdfDir, s.file)));
 
-export async function runScenario(s: Scenario, extractor: Extractor, loadPdf: PdfLoader = fromDisk()): Promise<EvalResult> {
+export async function runScenario(s: Scenario, extractor: Extractor, loadPdf: PdfLoader): Promise<EvalResult> {
   const pdf = await loadPdf(s);
   const r = await runPipeline({ documentId: s.id, pdf, envelope: s.envelope, source: "inbox" }, { repo: new MemoryRepo(), extractor, emit: () => {}, company: COMPANY });
   const actual = r.failed || !r.decision ? "FAILED" : r.decision.outcome;
@@ -22,7 +19,7 @@ export async function runScenario(s: Scenario, extractor: Extractor, loadPdf: Pd
   return { id: s.id, tag: s.tag, expected: s.expected.outcome, actual, rules, rulesOk, pass: actual === s.expected.outcome && rulesOk };
 }
 
-export async function runEval(opts: { extractor: Extractor; loadPdf?: PdfLoader }): Promise<EvalResult[]> {
+export async function runEval(opts: { extractor: Extractor; loadPdf: PdfLoader }): Promise<EvalResult[]> {
   const out: EvalResult[] = [];
   for (const s of SCENARIOS) out.push(await runScenario(s, opts.extractor, opts.loadPdf));
   return out;

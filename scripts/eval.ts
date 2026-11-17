@@ -5,7 +5,8 @@
  */
 import { existsSync } from "node:fs";
 import { GeminiExtractor } from "../src/ai/gemini-extractor";
-import { CachedExtractor, fileCacheStore } from "../src/ai/cached-extractor";
+import { CachedExtractor } from "../src/ai/cached-extractor";
+import { fileCacheStore, pdfFromDisk } from "../src/node/disk";
 import { runEval } from "../src/pipeline/eval";
 import type { ExtractOptions } from "../src/pipeline/ports";
 
@@ -22,7 +23,7 @@ async function main() {
   const cached = new CachedExtractor(gemini, fileCacheStore());
   const extractor = { extract: (pdf: Uint8Array, sha: string, o?: ExtractOptions) => cached.extract(pdf, sha, { ...o, fresh: fresh || o?.fresh }) };
 
-  const results = await runEval({ extractor });
+  const results = await runEval({ extractor, loadPdf: pdfFromDisk() });
   const pad = (s: string, n: number) => s.padEnd(n);
   console.log(`${pad("scenario", 22)}${pad("expected", 20)}${pad("actual", 20)}rules`);
   for (const r of results) {
