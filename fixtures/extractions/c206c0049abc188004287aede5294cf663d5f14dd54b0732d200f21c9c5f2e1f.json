@@ -1,0 +1,96 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": null,
+  "invoiceNumber": {
+    "value": "AC-5540",
+    "quote": "AC-5540",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-11",
+    "quote": "Nov 11, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-12-11",
+    "quote": "Dec 11, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Acme Office Supplies, LLC",
+    "quote": "Acme Office Supplies, LLC",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "84-1234567",
+    "quote": "84-1234567",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Logistics GmbH",
+    "quote": "Northwind Logistics GmbH",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": "PO-2031",
+    "quote": "PO-2031",
+    "page": 1,
+    "confidence": 1
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxInclusive": false,
+  "lines": [
+    {
+      "description": "Desk organizer",
+      "lineType": "goods",
+      "quantity": 5,
+      "unitPrice": 24,
+      "amount": 120,
+      "quote": "Desk organizer 5 $24.00 $120.00",
+      "page": 1,
+      "confidence": 1
+    }
+  ],
+  "subtotal": {
+    "value": 120,
+    "quote": "$120.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": 9.9,
+    "quote": "$9.90",
+    "page": 1,
+    "confidence": 1
+  },
+  "total": {
+    "value": 129.9,
+    "quote": "$129.90",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "021000021-4417730001",
+    "quote": "021000021-4417730001",
+    "page": 1,
+    "confidence": 1
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

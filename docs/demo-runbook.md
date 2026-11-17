@@ -28,7 +28,7 @@
 - Click **Replay** on any stored run to show the paced log again.
 
 ## Recovery moves
-- **Gemini slow or rate-limited:** recorded extractions replay instantly (the log says `cached`); the key pool rotates keys and falls back Flash → Flash-Lite, shown as "Retrying…" in the log.
+- **Gemini slow or rate-limited:** recorded extractions replay instantly (the log says `cached`); the key pool rotates keys and falls back 3.1 Flash-Lite → 3.5 Flash-Lite → 3.6 Flash, shown as "Retrying…" in the log.
 - **A run failed:** the workspace shows "The run couldn't finish — nothing was posted"; click **Re-run against AOP**.
 - **State got messy:** Reset demo data.
 - **No network at all:** `npm run dev:offline` runs the full app on recorded fixtures.
@@ -37,6 +37,9 @@
 - **Why not let the AI decide?** Auditability and determinism. AI only extracts; a rules engine decides; explanations are templated from the same rule facts, so they can't contradict the decision.
 - **How do you know extraction is right?** Quotes verified against the PDF text layer, arithmetic reconciliation with one targeted re-read, field confidence, and a 21-scenario eval.
 - **Why Gemini?** Free tier for the build; native PDF + JSON-schema output. The extractor is one interface — a production model is chosen by running the same eval.
+- **Which model, and why?** A bake-off (`docs/bakeoff-report.md`): three models tie at 100% field accuracy, so the fastest (3.1 Flash-Lite, 4.2 s) leads and the others are fallbacks.
+- **Are the highlights the model's guess?** No. Model boxes were right 78% of the time, so highlights are placed from the PDF text layer using the verified quote — 68/68 on digital PDFs. Scans get no highlight rather than a wrong one.
+- **What did real extraction catch that fixtures didn't?** The model returned the bill-to with its address, which made the bill-to check hold clean invoices. Prompt and matcher both fixed; the bake-off now scores bill-to.
 - **10,000 invoices a month?** Paid tier, batch API, queue workers, cheaper model for clean digital PDFs, cached vendor/PO context.
 - **What if the AI misreads a scan?** Low confidence or failed arithmetic → a person; never auto-approved.
 - **How would it learn?** Reviewer overrides become suggested per-vendor / per-category tolerances in the AOP.

@@ -1,0 +1,96 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": null,
+  "invoiceNumber": {
+    "value": "SIP-7702",
+    "quote": "SIP-7702",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-12",
+    "quote": "Nov 12, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-12-12",
+    "quote": "Dec 12, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Stark Industrial Parts",
+    "quote": "Stark Industrial Parts",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "27-3048816",
+    "quote": "27-3048816",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": "PO-2019",
+    "quote": "PO-2019",
+    "page": 1,
+    "confidence": 1
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 1
+  },
+  "taxInclusive": false,
+  "lines": [
+    {
+      "description": "Hex bolt M8x40, box of 100",
+      "lineType": "goods",
+      "quantity": 5,
+      "unitPrice": 34.5,
+      "amount": 172.5,
+      "quote": "Hex bolt M8x40, box of 100 5 $34.50 $172.50",
+      "page": 1,
+      "confidence": 1
+    }
+  ],
+  "subtotal": {
+    "value": 172.5,
+    "quote": "$172.50",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": 14.23,
+    "quote": "$14.23",
+    "page": 1,
+    "confidence": 1
+  },
+  "total": {
+    "value": 186.73,
+    "quote": "$186.73",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "071000013-3301776620",
+    "quote": "071000013",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

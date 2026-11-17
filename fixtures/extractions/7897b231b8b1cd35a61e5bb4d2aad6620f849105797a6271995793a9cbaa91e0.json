@@ -1,0 +1,116 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": "Document is an invoice requesting payment for office supplies.",
+  "invoiceNumber": {
+    "value": "AC-5560",
+    "quote": "AC-5560",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-11",
+    "quote": "Nov 11, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-12-11",
+    "quote": "Dec 11, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Acme Office Supplies, LLC",
+    "quote": "Acme Office Supplies, LLC",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "84-1234567",
+    "quote": "84-1234567",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": "PO-2033",
+    "quote": "PO-2033",
+    "page": 1,
+    "confidence": 1
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxInclusive": true,
+  "lines": [
+    {
+      "description": "A4 copy paper, 10-ream case",
+      "lineType": "goods",
+      "quantity": 20,
+      "unitPrice": 46.01,
+      "amount": 920.2,
+      "quote": "A4 copy paper, 10-ream case 20 $46.01 $920.20",
+      "page": 1,
+      "confidence": 1
+    },
+    {
+      "description": "Ballpoint pens, box of 50",
+      "lineType": "goods",
+      "quantity": 10,
+      "unitPrice": 20.56,
+      "amount": 205.6,
+      "quote": "Ballpoint pens, box of 50 10 $20.56 $205.60",
+      "page": 1,
+      "confidence": 1
+    },
+    {
+      "description": "Desk organizer",
+      "lineType": "goods",
+      "quantity": 5,
+      "unitPrice": 25.98,
+      "amount": 129.9,
+      "quote": "Desk organizer 5 $25.98 $129.90",
+      "page": 1,
+      "confidence": 1
+    }
+  ],
+  "subtotal": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxTotal": {
+    "value": 95.8,
+    "quote": "$95.80",
+    "page": 1,
+    "confidence": 1
+  },
+  "total": {
+    "value": 1255.7,
+    "quote": "$1,255.70",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "021000021-4417730001",
+    "quote": "021000021\n4417730001",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

@@ -1,0 +1,96 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": "This is an invoice issued by Initech Managed Services.",
+  "invoiceNumber": {
+    "value": "INI-1101",
+    "quote": "INI-1101",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-10",
+    "quote": "Nov 10, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-12-10",
+    "quote": "Dec 10, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Initech Managed Services",
+    "quote": "Initech Managed Services",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "33-1112223",
+    "quote": "33-1112223",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": "PO-2041",
+    "quote": "PO-2041",
+    "page": 1,
+    "confidence": 1
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "servicePeriod": {
+    "value": "2026-10",
+    "quote": "October 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxInclusive": null,
+  "lines": [
+    {
+      "description": "Managed support hours",
+      "lineType": "service",
+      "quantity": 140,
+      "unitPrice": 125,
+      "amount": 17500,
+      "quote": "Managed support hours 140 $125.00 $17,500.00",
+      "page": 1,
+      "confidence": 1
+    }
+  ],
+  "subtotal": {
+    "value": 17500,
+    "quote": "$17,500.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "total": {
+    "value": 17500,
+    "quote": "$17,500.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "026009593-8812005521",
+    "quote": "026009593\n8812005521",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

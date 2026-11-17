@@ -1,0 +1,116 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": null,
+  "invoiceNumber": {
+    "value": "SC-2219",
+    "quote": "SC-2219",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-11",
+    "quote": "Nov 11, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-12-11",
+    "quote": "Dec 11, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Soylent Catering",
+    "quote": "Soylent Catering",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "52-8817340",
+    "quote": "52-8817340",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": "PO-2090",
+    "quote": "PO-2090",
+    "page": 1,
+    "confidence": 1
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxInclusive": null,
+  "lines": [
+    {
+      "description": "Catering — all-hands lunch, per head",
+      "lineType": "service",
+      "quantity": 320,
+      "unitPrice": 18.5,
+      "amount": 5920,
+      "quote": "Catering — all-hands lunch, per head 320 $18.50 $5,920.00",
+      "page": 1,
+      "confidence": 1
+    },
+    {
+      "description": "Coffee & beverage service",
+      "lineType": "service",
+      "quantity": 1,
+      "unitPrice": 1180,
+      "amount": 1180,
+      "quote": "Coffee & beverage service 1 $1,180.00 $1,180.00",
+      "page": 1,
+      "confidence": 1
+    },
+    {
+      "description": "Delivery & setup",
+      "lineType": "freight",
+      "quantity": 1,
+      "unitPrice": 240,
+      "amount": 240,
+      "quote": "Delivery & setup 1 $240.00 $240.00",
+      "page": 1,
+      "confidence": 1
+    }
+  ],
+  "subtotal": {
+    "value": 7430,
+    "quote": "$7,430.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": 0,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "total": {
+    "value": 7430,
+    "quote": "$7,430.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "091000019-6610028841",
+    "quote": "091000019\nAccount: 6610028841",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

@@ -1,0 +1,96 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": "Document is explicitly titled Invoice",
+  "invoiceNumber": {
+    "value": "UP-4502",
+    "quote": "UP-4502",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-12",
+    "quote": "Nov 12, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-12-12",
+    "quote": "Dec 12, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Umbrella Print Co.",
+    "quote": "Umbrella Print Co.",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "46-5550192",
+    "quote": "46-5550192",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": "PO-2058",
+    "quote": "PO-2058",
+    "page": 1,
+    "confidence": 1
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxInclusive": false,
+  "lines": [
+    {
+      "description": "Glossy A3 paper, ream",
+      "lineType": "goods",
+      "quantity": 30,
+      "unitPrice": 16.5,
+      "amount": 495,
+      "quote": "Glossy A3 paper, ream 30 $16.50 $495.00",
+      "page": 1,
+      "confidence": 1
+    }
+  ],
+  "subtotal": {
+    "value": 495,
+    "quote": "$495.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": 40.84,
+    "quote": "$40.84",
+    "page": 1,
+    "confidence": 1
+  },
+  "total": {
+    "value": 535.84,
+    "quote": "$535.84",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "011000138-2290043318",
+    "quote": "011000138",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

@@ -1,0 +1,96 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": null,
+  "invoiceNumber": {
+    "value": "INV-10587",
+    "quote": "INV-10587",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-05",
+    "quote": "Nov 5, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-12-05",
+    "quote": "Dec 5, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Globex Corporation",
+    "quote": "Globex Corporation",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "94-7654321",
+    "quote": "94-7654321",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": "PO-2063",
+    "quote": "PO-2063",
+    "page": 1,
+    "confidence": 1
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "servicePeriod": {
+    "value": "2026-11",
+    "quote": "November 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxInclusive": null,
+  "lines": [
+    {
+      "description": "Monthly platform subscription",
+      "lineType": "service",
+      "quantity": 1,
+      "unitPrice": 2400,
+      "amount": 2400,
+      "quote": "Monthly platform subscription 1 $2,400.00 $2,400.00",
+      "page": 1,
+      "confidence": 1
+    }
+  ],
+  "subtotal": {
+    "value": 2400,
+    "quote": "$2,400.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": 0,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "total": {
+    "value": 2400,
+    "quote": "$2,400.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "121000248-5560910492",
+    "quote": "121000248\nAccount: 5560910492",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

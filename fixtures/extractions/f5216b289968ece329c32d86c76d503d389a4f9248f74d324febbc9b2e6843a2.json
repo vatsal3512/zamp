@@ -1,0 +1,116 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": null,
+  "invoiceNumber": {
+    "value": "SIP-7781",
+    "quote": "SIP-7781",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-09",
+    "quote": "Nov 9, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-12-09",
+    "quote": "Dec 9, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Stark Industrial Parts",
+    "quote": "Stark Industrial Parts",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "27-3048816",
+    "quote": "27-3048816",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxInclusive": false,
+  "lines": [
+    {
+      "description": "Hex bolt M8x40, box of 100",
+      "lineType": "goods",
+      "quantity": 12,
+      "unitPrice": 34.5,
+      "amount": 414,
+      "quote": "Hex bolt M8x40, box of 100",
+      "page": 1,
+      "confidence": 1
+    },
+    {
+      "description": "Steel washer M8, box of 200",
+      "lineType": "goods",
+      "quantity": 12,
+      "unitPrice": 12.75,
+      "amount": 153,
+      "quote": "Steel washer M8, box of 200",
+      "page": 1,
+      "confidence": 1
+    },
+    {
+      "description": "Nylon lock nut M8, box of 100",
+      "lineType": "goods",
+      "quantity": 6,
+      "unitPrice": 28.9,
+      "amount": 173.4,
+      "quote": "Nylon lock nut M8, box of 100",
+      "page": 1,
+      "confidence": 1
+    }
+  ],
+  "subtotal": {
+    "value": 740.4,
+    "quote": "740.40",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": 61.08,
+    "quote": "61.08",
+    "page": 1,
+    "confidence": 1
+  },
+  "total": {
+    "value": 801.48,
+    "quote": "801.48",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "071000013-3301776620",
+    "quote": "071000013\n3301776620",
+    "page": 1,
+    "confidence": 0.95
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

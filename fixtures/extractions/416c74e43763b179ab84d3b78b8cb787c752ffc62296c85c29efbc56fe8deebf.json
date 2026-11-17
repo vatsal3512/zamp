@@ -1,0 +1,96 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": null,
+  "invoiceNumber": {
+    "value": "INV-10601",
+    "quote": "INV-10601",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-13",
+    "quote": "Nov 13, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-11-20",
+    "quote": "Nov 20, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Globex Corporation",
+    "quote": "Globex Corporation",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "94-7654321",
+    "quote": "94-7654321",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": "PO-2064",
+    "quote": "PO-2064",
+    "page": 1,
+    "confidence": 1
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxInclusive": null,
+  "lines": [
+    {
+      "description": "Rack server maintenance kit",
+      "lineType": "service",
+      "quantity": 2,
+      "unitPrice": 4935,
+      "amount": 9870,
+      "quote": "Rack server maintenance kit 2 $4,935.00 $9,870.00",
+      "page": 1,
+      "confidence": 0.95
+    }
+  ],
+  "subtotal": {
+    "value": 9870,
+    "quote": "$9,870.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "total": {
+    "value": 9870,
+    "quote": "$9,870.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "121000248-9930017731",
+    "quote": "121000248\nAccount: 9930017731",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

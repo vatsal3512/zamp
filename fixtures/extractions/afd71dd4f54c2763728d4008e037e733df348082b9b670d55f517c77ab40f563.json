@@ -1,0 +1,106 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": "Document is explicitly labeled as an INVOICE.",
+  "invoiceNumber": {
+    "value": "AC-5571",
+    "quote": "AC-5571",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-11",
+    "quote": "Nov 11, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-12-11",
+    "quote": "Dec 11, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Acme Office Supplies, LLC",
+    "quote": "Acme Office Supplies, LLC",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "84-1234567",
+    "quote": "84-1234567",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": "PO-2034",
+    "quote": "PO-2034",
+    "page": 1,
+    "confidence": 1
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxInclusive": false,
+  "lines": [
+    {
+      "description": "Ergonomic office chair",
+      "lineType": "goods",
+      "quantity": 4,
+      "unitPrice": 289,
+      "amount": 1156,
+      "quote": "Ergonomic office chair 4 $289.00 $1,156.00",
+      "page": 1,
+      "confidence": 1
+    },
+    {
+      "description": "Shipping & handling",
+      "lineType": "freight",
+      "quantity": 1,
+      "unitPrice": 45,
+      "amount": 45,
+      "quote": "Shipping & handling 1 $45.00 $45.00",
+      "page": 1,
+      "confidence": 1
+    }
+  ],
+  "subtotal": {
+    "value": 1201,
+    "quote": "$1,201.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": 95.37,
+    "quote": "$95.37",
+    "page": 1,
+    "confidence": 1
+  },
+  "total": {
+    "value": 1296.37,
+    "quote": "$1,296.37",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "021000021-4417730001",
+    "quote": "021000021\n4417730001",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

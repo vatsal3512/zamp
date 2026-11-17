@@ -1,0 +1,96 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": null,
+  "invoiceNumber": {
+    "value": "PX-0412",
+    "quote": "PX-0412",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-11",
+    "quote": "Nov 11, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-12-11",
+    "quote": "Dec 11, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Pixel & Co. Design Studio",
+    "quote": "Pixel & Co. Design Studio",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "81-2093374",
+    "quote": "81-2093374",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": "PO-2095",
+    "quote": "PO-2095",
+    "page": 1,
+    "confidence": 1
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxInclusive": null,
+  "lines": [
+    {
+      "description": "Website refresh — project deliverable",
+      "lineType": "service",
+      "quantity": null,
+      "unitPrice": null,
+      "amount": 3500,
+      "quote": "$3,500.00",
+      "page": 1,
+      "confidence": 0.9
+    }
+  ],
+  "subtotal": {
+    "value": 3500,
+    "quote": "$3,500.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "total": {
+    "value": 3500,
+    "quote": "$3,500.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "122105155-7781230094",
+    "quote": "Routing (ABA): 122105155\nAccount: 7781230094",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

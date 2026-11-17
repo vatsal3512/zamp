@@ -1,0 +1,106 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": null,
+  "invoiceNumber": {
+    "value": "WE-001",
+    "quote": "WE-001",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-10",
+    "quote": "Nov 10, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-11-25",
+    "quote": "Nov 25, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Wayne Enterprises",
+    "quote": "Wayne Enterprises",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "61-0042007",
+    "quote": "61-0042007",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxInclusive": null,
+  "lines": [
+    {
+      "description": "Security consulting — Q4 assessment",
+      "lineType": "service",
+      "quantity": 1,
+      "unitPrice": 3800,
+      "amount": 3800,
+      "quote": "Security consulting — Q4 assessment 1 $3,800.00 $3,800.00",
+      "page": 1,
+      "confidence": 1
+    },
+    {
+      "description": "Travel expenses",
+      "lineType": "other",
+      "quantity": 1,
+      "unitPrice": 700,
+      "amount": 700,
+      "quote": "Travel expenses 1 $700.00 $700.00",
+      "page": 1,
+      "confidence": 1
+    }
+  ],
+  "subtotal": {
+    "value": 4500,
+    "quote": "$4,500.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "total": {
+    "value": 4500,
+    "quote": "$4,500.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "021202337-5544332211",
+    "quote": "021202337\n5544332211",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

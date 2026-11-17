@@ -1,0 +1,96 @@
+{
+  "documentType": "credit_note",
+  "documentTypeReason": "Document is titled CREDIT NOTE.",
+  "invoiceNumber": {
+    "value": "CN-112",
+    "quote": "CN-112",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-09",
+    "quote": "Nov 9, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "vendorName": {
+    "value": "Acme Office Supplies, LLC",
+    "quote": "Acme Office Supplies, LLC",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "84-1234567",
+    "quote": "84-1234567",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": "PO-2031",
+    "quote": "PO-2031",
+    "page": 1,
+    "confidence": 1
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 1
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxInclusive": null,
+  "lines": [
+    {
+      "description": "Returned — Desk organizer (damaged)",
+      "lineType": "goods",
+      "quantity": 3,
+      "unitPrice": -24,
+      "amount": -72,
+      "quote": "Returned — Desk organizer (damaged) 3 -$24.00 -$72.00",
+      "page": 1,
+      "confidence": 1
+    }
+  ],
+  "subtotal": {
+    "value": -72,
+    "quote": "-$72.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "total": {
+    "value": -72,
+    "quote": "-$72.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

@@ -1,0 +1,96 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": null,
+  "invoiceNumber": {
+    "value": "VI-3301",
+    "quote": "VI-3301",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-12",
+    "quote": "Nov 12, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-12-12",
+    "quote": "Dec 12, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Vandelay Imports",
+    "quote": "Vandelay Imports",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "13-6620551",
+    "quote": "13-6620551",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 1
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxInclusive": null,
+  "lines": [
+    {
+      "description": "Latex gloves, case of 1000",
+      "lineType": "goods",
+      "quantity": 20,
+      "unitPrice": 48,
+      "amount": 960,
+      "quote": "Latex gloves, case of 1000 20 $48.00 $960.00",
+      "page": 1,
+      "confidence": 1
+    }
+  ],
+  "subtotal": {
+    "value": 960,
+    "quote": "$960.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "total": {
+    "value": 960,
+    "quote": "$960.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "026013673-1180024410",
+    "quote": "Routing (ABA): 026013673\nAccount: 1180024410",
+    "page": 1,
+    "confidence": 0.95
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

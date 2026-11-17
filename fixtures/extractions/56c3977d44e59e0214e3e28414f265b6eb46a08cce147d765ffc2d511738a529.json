@@ -1,0 +1,106 @@
+{
+  "documentType": "invoice",
+  "documentTypeReason": null,
+  "invoiceNumber": {
+    "value": "BOS/2026/118",
+    "quote": "BOS/2026/118",
+    "page": 1,
+    "confidence": 1
+  },
+  "invoiceDate": {
+    "value": "2026-11-12",
+    "quote": "Nov 12, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": "2026-12-12",
+    "quote": "Dec 12, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorName": {
+    "value": "Bharat Office Solutions Pvt Ltd",
+    "quote": "Bharat Office Solutions Pvt Ltd",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "29ABCDE1234F1Z5",
+    "quote": "29ABCDE1234F1Z5",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "currency": {
+    "value": "INR",
+    "quote": "INR",
+    "page": 1,
+    "confidence": 1
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxInclusive": false,
+  "lines": [
+    {
+      "description": "A4 paper ream (75 GSM)",
+      "lineType": "goods",
+      "quantity": 50,
+      "unitPrice": 350,
+      "amount": 17500,
+      "quote": "A4 paper ream (75 GSM) 4802 50 ₹350.00 ₹17,500.00",
+      "page": 1,
+      "confidence": 1
+    },
+    {
+      "description": "Stapler, heavy duty",
+      "lineType": "goods",
+      "quantity": 10,
+      "unitPrice": 450,
+      "amount": 4500,
+      "quote": "Stapler, heavy duty 8472 10 ₹450.00 ₹4,500.00",
+      "page": 1,
+      "confidence": 1
+    }
+  ],
+  "subtotal": {
+    "value": 22000,
+    "quote": "₹22,000.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "taxTotal": {
+    "value": 3960,
+    "quote": "₹1,980.00\n₹1,980.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "total": {
+    "value": 25960,
+    "quote": "₹25,960.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": "30112233445",
+    "quote": "30112233445",
+    "page": 1,
+    "confidence": 1
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

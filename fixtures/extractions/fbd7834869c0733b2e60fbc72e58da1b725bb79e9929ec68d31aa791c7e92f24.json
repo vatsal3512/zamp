@@ -1,0 +1,85 @@
+{
+  "documentType": "other",
+  "documentTypeReason": "This is a candidate guide for a job application case study.",
+  "invoiceNumber": {
+    "value": null,
+    "quote": null,
+    "page": null,
+    "confidence": 0
+  },
+  "invoiceDate": {
+    "value": null,
+    "quote": null,
+    "page": null,
+    "confidence": 0
+  },
+  "dueDate": {
+    "value": null,
+    "quote": null,
+    "page": null,
+    "confidence": 0
+  },
+  "vendorName": {
+    "value": "zamp",
+    "quote": "zamp",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "vendorTaxId": {
+    "value": null,
+    "quote": null,
+    "page": null,
+    "confidence": 0
+  },
+  "billTo": {
+    "value": null,
+    "quote": null,
+    "page": null,
+    "confidence": 0
+  },
+  "poNumber": {
+    "value": null,
+    "quote": null,
+    "page": null,
+    "confidence": 0
+  },
+  "currency": {
+    "value": null,
+    "quote": null,
+    "page": null,
+    "confidence": 0
+  },
+  "servicePeriod": {
+    "value": null,
+    "quote": null,
+    "page": null,
+    "confidence": 0
+  },
+  "taxInclusive": null,
+  "lines": [],
+  "subtotal": {
+    "value": null,
+    "quote": null,
+    "page": null,
+    "confidence": 0
+  },
+  "taxTotal": {
+    "value": null,
+    "quote": null,
+    "page": null,
+    "confidence": 0
+  },
+  "total": {
+    "value": null,
+    "quote": null,
+    "page": null,
+    "confidence": 0
+  },
+  "bankAccount": {
+    "value": null,
+    "quote": null,
+    "page": null,
+    "confidence": 0
+  },
+  "_model": "gemini-3.1-flash-lite"
+}

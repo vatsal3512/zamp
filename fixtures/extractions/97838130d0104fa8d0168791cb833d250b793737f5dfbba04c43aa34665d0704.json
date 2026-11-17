@@ -1,0 +1,85 @@
+{
+  "documentType": "statement",
+  "documentTypeReason": "Document is explicitly titled STATEMENT OF ACCOUNT and states it is not an invoice.",
+  "invoiceNumber": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "invoiceDate": {
+    "value": "2026-10-31",
+    "quote": "Oct 31, 2026",
+    "page": 1,
+    "confidence": 1
+  },
+  "dueDate": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "vendorName": {
+    "value": "Acme Office Supplies, LLC",
+    "quote": "Acme Office Supplies, LLC",
+    "page": 1,
+    "confidence": 1
+  },
+  "vendorTaxId": {
+    "value": "84-1234567",
+    "quote": "84-1234567",
+    "page": 1,
+    "confidence": 1
+  },
+  "billTo": {
+    "value": "Northwind Labs, Inc.",
+    "quote": "Northwind Labs, Inc.",
+    "page": 1,
+    "confidence": 1
+  },
+  "poNumber": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "currency": {
+    "value": "USD",
+    "quote": "$",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "servicePeriod": {
+    "value": "2026-10",
+    "quote": "OCTOBER 2026",
+    "page": 1,
+    "confidence": 0.9
+  },
+  "taxInclusive": null,
+  "lines": [],
+  "subtotal": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "taxTotal": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "total": {
+    "value": 1129,
+    "quote": "$1,129.00",
+    "page": 1,
+    "confidence": 1
+  },
+  "bankAccount": {
+    "value": null,
+    "quote": null,
+    "page": 1,
+    "confidence": 0
+  },
+  "_model": "gemini-3.1-flash-lite"
+}
