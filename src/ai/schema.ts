@@ -6,7 +6,11 @@ import { z } from "zod";
 import { DOCUMENT_TYPES, type ExtractedInvoice } from "@/domain/types";
 
 const LINE_TYPES = ["goods", "service", "freight", "tax", "discount", "other"] as const;
-const box = z.tuple([z.number(), z.number(), z.number(), z.number()]).optional();
+/** A box is decoration: anything that is not four numbers (null, [], wrong length) is dropped, never fatal. */
+const box = z
+  .unknown()
+  .transform((b) => (Array.isArray(b) && b.length === 4 && b.every((n) => typeof n === "number" && Number.isFinite(n)) ? (b as [number, number, number, number]) : undefined))
+  .optional();
 
 const field = <T extends z.ZodTypeAny>(value: T) =>
   z.object({ value: value.nullable(), quote: z.string().nullable(), page: z.number().nullable(), confidence: z.number(), box });

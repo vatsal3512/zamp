@@ -1,6 +1,6 @@
 import type { Cents, ExtractedInvoice, Finding, LineType, NetLine, Policy, RuleHit, StageResult } from "@/domain/types";
 import { formatPct, formatUsd, toCents } from "@/domain/money";
-import { quoteFound, tokenJaccard } from "@/domain/text";
+import { quoteFound, tokenContainment, tokenJaccard } from "@/domain/text";
 
 export interface ValidateData {
   quoteChecks: { field: string; found: boolean; score: number }[];
@@ -44,10 +44,13 @@ export function validate(x: ExtractedInvoice, ctx: ValidateCtx): StageResult<Val
 
   // 2. Bill-to entity
   if (x.billTo.value) {
-    const best = Math.max(...[ctx.company.name, ...ctx.company.aliases].map((n) => tokenJaccard(x.billTo.value!, n)));
-    if (best < 0.6) {
-      hits.push({ rule: "R-DOC-03", outcome: "HOLD", facts: { billTo: x.billTo.value, company: ctx.company.name } });
-      findings.push({ level: "warn", text: `Billed to "${x.billTo.value}", not ${ctx.company.name}` });
+    // Readers often return the whole bill-to block (name + address): match the name line by containment too.
+    const nameLine = x.billTo.value.split("\n")[0];
+    const names = [ctx.company.name, ...ctx.company.aliases];
+    const matches = names.some((n) => tokenJaccard(x.billTo.value!, n) >= 0.6 || tokenContainment(n, nameLine) === 1);
+    if (!matches) {
+      hits.push({ rule: "R-DOC-03", outcome: "HOLD", facts: { billTo: nameLine, company: ctx.company.name } });
+      findings.push({ level: "warn", text: `Billed to "${nameLine}", not ${ctx.company.name}` });
     } else findings.push({ level: "ok", text: `Bill-to matches ${ctx.company.name}` });
   }
 

@@ -8,6 +8,7 @@ import { GeminiExtractor } from "../src/ai/gemini-extractor";
 import { toCents } from "../src/domain/money";
 import { tokenJaccard, normalizeForQuote } from "../src/domain/text";
 import { SCENARIOS, type Scenario } from "../fixtures/scenarios";
+import { INVOICE_DOCS } from "../fixtures/invoice-docs";
 import type { ExtractedInvoice } from "../src/domain/types";
 
 if (existsSync(".env.local")) process.loadEnvFile(".env.local");
@@ -28,6 +29,9 @@ function score(s: Scenario, x: ExtractedInvoice): { correct: number; total: numb
       ["vendorName", t.vendorName === null ? x.vendorName.value === null : tokenJaccard(x.vendorName.value ?? "", t.vendorName) >= 0.8],
       ["lineCount", x.lines.filter((l) => l.lineType !== "tax").length === t.lineCount],
     );
+    // Bill-to drives R-DOC-03: the reader must return the entity name, not the whole address block.
+    const billTo = INVOICE_DOCS.find((d) => d.scenarioId === s.id)?.billTo.name;
+    if (billTo) checks.push(["billTo", tokenJaccard(x.billTo.value ?? "", billTo) >= 0.8]);
   }
   const misses = checks.filter(([, ok]) => !ok).map(([k]) => k);
   return { correct: checks.length - misses.length, total: checks.length, misses };

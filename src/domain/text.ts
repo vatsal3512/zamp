@@ -41,6 +41,16 @@ export function normalizeInvoiceNumber(s: string): string {
 
 const tokens = (s: string) => new Set(s.toLowerCase().split(/[^a-z0-9]+/).filter((t) => t.length > 1));
 
+/** Share of the name's tokens that appear in the text — "Northwind Labs" is fully contained in a bill-to block with an address. */
+export function tokenContainment(name: string, text: string): number {
+  const N = tokens(name);
+  const T = tokens(text);
+  if (N.size === 0) return 0;
+  let inter = 0;
+  for (const t of N) if (T.has(t)) inter++;
+  return inter / N.size;
+}
+
 export function tokenJaccard(a: string, b: string): number {
   const A = tokens(a);
   const B = tokens(b);

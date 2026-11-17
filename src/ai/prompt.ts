@@ -9,6 +9,7 @@ Rules:
 - lineType per line: goods, service, freight (shipping / delivery / handling / postage), tax (a tax shown as a line), discount, or other.
 - taxInclusive is true only if the document states that prices include tax; false if tax is added separately; null if unclear.
 - taxTotal is the total tax amount printed (sum of all tax rows, or the stated included tax).
+- vendorName and billTo are the legal entity names only (e.g. "Acme Office Supplies, LLC") — never the street address; quote just the name line.
 - currency is an ISO code (USD, INR, EUR, GBP…) from symbols or text; null if not determinable.
 - servicePeriod is YYYY-MM only if a billing/service period is printed; otherwise null.
 - bankAccount is the remittance bank account as printed (routing-account for US banks, e.g. "021000021-4417730001").

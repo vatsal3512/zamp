@@ -35,6 +35,13 @@ describe("validate — document gates", () => {
     expect(rules(makeInvoice({ billTo: fld("NORTHWIND LABS INC") }))).not.toContain("R-DOC-03");
   });
 
+  it("accepts a bill-to block that includes our address, but not a look-alike entity with one", () => {
+    const addr = "500 Howard Street, Suite 300\nSan Francisco, CA 94105\nUnited States";
+    expect(rules(makeInvoice({ billTo: fld(`Northwind Labs, Inc.\n${addr}`) }))).not.toContain("R-DOC-03");
+    expect(rules(makeInvoice({ billTo: fld("Northwind Labs, Inc., 500 Howard Street, Suite 300, San Francisco, CA 94105") }))).not.toContain("R-DOC-03");
+    expect(rules(makeInvoice({ billTo: fld("Northwind Logistics GmbH\nSpeicherstraße 12\n20457 Hamburg\nGermany") }))).toContain("R-DOC-03");
+  });
+
   it("holds non-USD invoices without halting, and assumes USD when currency is missing", () => {
     const inr = run(makeInvoice({ currency: fld("INR") }));
     expect(inr.hits.map((h) => h.rule)).toContain("R-CUR-01");

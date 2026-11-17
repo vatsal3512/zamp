@@ -43,6 +43,21 @@ describe("parseExtraction", () => {
     expect(parse({ ...happy(), documentType: "banana" }).ok).toBe(false);
   });
 
+  it("keeps a valid box and drops a malformed one without failing the extraction", () => {
+    const x = happy();
+    x.total.box = [100, 600, 120, 700];
+    x.invoiceNumber.box = null;
+    x.poNumber.box = [];
+    x.dueDate.box = [1, 2, 3];
+    const r = parse(x);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.value.total.box).toEqual([100, 600, 120, 700]);
+    expect(r.value.invoiceNumber.box).toBeUndefined();
+    expect(r.value.poNumber.box).toBeUndefined();
+    expect(r.value.dueDate.box).toBeUndefined();
+  });
+
   it("rejects text that is not JSON", () => {
     expect(parseExtraction("Sorry, I can't read this").ok).toBe(false);
   });
