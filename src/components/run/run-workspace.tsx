@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { actionsFor, type Action } from "@/lib/actions";
+import { liveRunHref } from "@/lib/live-run";
 import { STATUS_META, TONE } from "@/lib/status";
 import { useApi, useRefresh } from "@/lib/use-api";
 import { decisionDiff } from "@/lib/decision-diff";
@@ -418,7 +419,7 @@ function ActionBar({ runId, view, detail, onDone }: { runId: string; view: RunVi
   }
 
   function click(a: Action) {
-    if (a.id === "rerun") return router.push(`/runs/live?rerunOf=${runId}`);
+    if (a.id === "rerun") return router.push(liveRunHref({ rerunOf: runId }));
     if (a.id === "ledger") {
       const text = view.stages.find((s) => s.id === "act")?.findings.find((f) => f.text.startsWith("Ledger"))?.text;
       return void toast(text ?? "Not posted");
@@ -478,7 +479,7 @@ function RerunOnlyBar({ runId }: { runId: string }) {
   const router = useRouter();
   return (
     <footer className="flex h-14 shrink-0 items-center justify-end border-t border-border bg-white px-6">
-      <Button size="lg" variant="outline" onClick={() => router.push(`/runs/live?rerunOf=${runId}`)}>Re-run against AOP</Button>
+      <Button size="lg" variant="outline" onClick={() => router.push(liveRunHref({ rerunOf: runId }))}>Re-run against AOP</Button>
     </footer>
   );
 }

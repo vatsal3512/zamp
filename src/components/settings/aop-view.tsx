@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { DataTable, Eyebrow, Mono, RuleChip } from "@/components/primitives";
 import { useApi, useRefresh } from "@/lib/use-api";
+import { liveRunHref } from "@/lib/live-run";
 import { RULE_TITLES } from "@/templates/explain";
 import type { Policy, RuleId } from "@/domain/types";
 import type { RunSummary } from "@/pipeline/ports";
@@ -83,7 +84,7 @@ function AopForm() {
     if (!r.ok) return void toast.error(b.error ?? "Could not save");
     toast.success(`AOP v${b.version} saved`);
     bump();
-    if (rerun && lastRun) router.push(`/runs/live?rerunOf=${lastRun.id}`);
+    if (rerun && lastRun) router.push(liveRunHref({ rerunOf: lastRun.id }));
   }
 
   if (!p || !form) return <div className="p-5 text-[13px] text-ink-3">Loading…</div>;
@@ -134,6 +135,7 @@ function AopForm() {
 }
 
 function Assumptions() {
+  const router = useRouter();
   const runsApi = useApi<{ runs: RunSummary[] }>("/api/runs");
   const latest = (scenarioId: string) => runsApi.data?.runs.find((r) => r.documentId === `doc-${scenarioId}`);
   return (
@@ -150,10 +152,16 @@ function Assumptions() {
                   const run = latest(id);
                   const s = scenarioById(id)!;
                   return (
-                    <Link key={id} href={run ? `/runs/${run.id}` : `/runs/live?inbox=msg-${id}`}
-                      className={cn("rounded border px-1.5 py-0.5 font-mono text-[12px]", run ? "border-border text-ink hover:bg-surface-2" : "border-dashed border-border text-ink-3 hover:text-ink")}>
-                      {s.tag}
-                    </Link>
+                    run ? (
+                      <Link key={id} href={`/runs/${run.id}`} className="rounded border border-border px-1.5 py-0.5 font-mono text-[12px] text-ink hover:bg-surface-2">
+                        {s.tag}
+                      </Link>
+                    ) : (
+                      <button key={id} type="button" onClick={() => router.push(liveRunHref({ inbox: `msg-${id}` }))}
+                        className="rounded border border-dashed border-border px-1.5 py-0.5 font-mono text-[12px] text-ink-3 hover:text-ink">
+                        {s.tag}
+                      </button>
+                    )
                   );
                 })}
               </span>

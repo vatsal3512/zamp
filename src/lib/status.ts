@@ -16,3 +16,15 @@ export const TONE = {
   amber: { pill: "border-st-amber-bd bg-st-amber-bg text-st-amber", dot: "bg-st-amber-dot", cell: "bg-st-amber-bg text-st-amber", bar: "bg-st-amber-dot", edge: "border-l-st-amber-dot" },
   crimson: { pill: "border-st-crimson-bd bg-st-crimson-bg text-st-crimson", dot: "bg-st-crimson-dot", cell: "bg-st-crimson-bg text-st-crimson", bar: "bg-st-crimson-dot", edge: "border-l-st-crimson-dot" },
 } as const;
+
+/**
+ * What the bills table shows for a run. A reviewer's resolution replaces the agent's status: an approved or
+ * signed-off hold reads "Resolved · approve" (emerald), a rejected one "Resolved · reject" (crimson). A vendor query
+ * leaves the hold open, so the agent's status stays.
+ */
+export function displayStatus(r: { outcome: Outcome | "FAILED" | null; override: { action: string } | null }): { label?: string; tone?: Tone } {
+  const a = r.override?.action;
+  if (a === "approve" || a === "sign_off") return { label: `Resolved · ${a === "sign_off" ? "signed off" : "approve"}`, tone: "emerald" };
+  if (a === "reject") return { label: "Resolved · reject", tone: "crimson" };
+  return {};
+}

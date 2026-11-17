@@ -5,9 +5,9 @@ import type { Outcome } from "@/domain/types";
 import { STATUS_META, TONE, type Tone } from "@/lib/status";
 
 /** 1px-bordered pill with a 6px dot. `outcome` null = neutral "Processing…" state. */
-export function StatusPill({ outcome, size = "sm", label }: { outcome: Outcome | "FAILED" | null; size?: "sm" | "lg"; label?: string }) {
+export function StatusPill({ outcome, size = "sm", label, tone: toneOverride }: { outcome: Outcome | "FAILED" | null; size?: "sm" | "lg"; label?: string; tone?: Tone }) {
   const meta = outcome && outcome !== "FAILED" ? STATUS_META[outcome] : null;
-  const tone = meta ? TONE[meta.tone] : null;
+  const tone = toneOverride ? TONE[toneOverride] : meta ? TONE[meta.tone] : null;
   const text = label ?? (outcome === "FAILED" ? "Failed" : meta?.label ?? "Processing…");
   return (
     <span

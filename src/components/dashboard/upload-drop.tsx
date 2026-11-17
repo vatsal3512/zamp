@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Upload } from "lucide-react";
 import { toast } from "sonner";
 import { checkFile, uploadInChunks } from "@/lib/upload";
+import { liveRunHref } from "@/lib/live-run";
 import { cn } from "@/lib/utils";
 
 export function UploadDrop() {
@@ -20,7 +21,7 @@ export function UploadDrop() {
     try {
       setProgress(0);
       const { documentId } = await uploadInChunks(file, setProgress);
-      router.push(`/runs/live?document=${documentId}`);
+      router.push(liveRunHref({ document: documentId }));
     } catch (e) {
       toast.error((e as Error).message);
       setProgress(null);
