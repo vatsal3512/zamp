@@ -72,6 +72,13 @@ describe("actionsFor", () => {
     expect(ids("HOLD", { hasDraftEmail: false, isDuplicate: false })).not.toContain("query");
   });
 
+  it("never makes approval the primary action when payment is blocked", () => {
+    const a = actionsFor("HOLD", { hasDraftEmail: false, isDuplicate: false, paymentBlocked: true });
+    expect(a.map((x) => x.id)).toEqual(["approve", "reject", "rerun"]);
+    expect(a[0]).toMatchObject({ label: "Verified by call-back — approve…", variant: "secondary", needsReason: true });
+    expect(a.some((x) => x.variant === "primary")).toBe(false);
+  });
+
   it("offers sign-off for pending invoices", () => {
     expect(ids("ROUTE_FOR_APPROVAL")).toEqual(["sign_off", "reject"]);
   });

@@ -22,7 +22,7 @@ export function BillsView({ initialTab = "all" }: { initialTab?: "all" | "attent
   const [tab, setTab] = useState<"all" | "attention">(initialTab);
   const runsApi = useApi<{ runs: RunSummary[]; kpis: Kpis }>("/api/runs");
   const inboxApi = useApi<{ messages: InboxRow[] }>("/api/inbox");
-  const runs = runsApi.data?.runs ?? [];
+  const runs = useMemo(() => runsApi.data?.runs ?? [], [runsApi.data]);
   const k = runsApi.data?.kpis;
   const shown = filterRuns(runs, { needsAttention: tab === "attention" });
 

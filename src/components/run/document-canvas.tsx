@@ -61,7 +61,7 @@ export default function DocumentCanvas({ documentId, envelope, kind, focus, high
           file={`/api/documents/${documentId}`}
           onLoadSuccess={(d) => setPages(d.numPages)}
           loading={<div className="mx-auto h-[720px] w-[560px] animate-pulse bg-white shadow-sm" />}
-          error={<div className="p-6 text-[13px] text-ink-3">This document can't be previewed.</div>}
+          error={<div className="p-6 text-[13px] text-ink-3">This document can&apos;t be previewed.</div>}
         >
           {Array.from({ length: pages }, (_, i) => (
             <div key={i} id={`pdf-page-${i + 1}`} className="relative mx-auto mb-5 w-fit bg-white shadow-[0_1px_2px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.04)]">

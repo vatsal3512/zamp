@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -67,7 +67,11 @@ function AopForm() {
   const [form, setForm] = useState<Form | null>(null);
   const [saving, setSaving] = useState(false);
   const p = policyApi.data;
-  useEffect(() => { if (p) setForm(toForm(p)); }, [p]);
+  const [formOf, setFormOf] = useState<Policy | null>(null);
+  if (p && p !== formOf) {
+    setFormOf(p);
+    setForm(toForm(p));
+  }
   const lastRun = runsApi.data?.runs[0];
 
   async function save(rerun: boolean) {

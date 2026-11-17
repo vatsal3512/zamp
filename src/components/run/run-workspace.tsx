@@ -21,7 +21,11 @@ import type { Finding, Outcome, Policy } from "@/domain/types";
 import type { RunDetail } from "@/pipeline/ports";
 import { cn } from "@/lib/utils";
 
-const DocumentCanvas = dynamic(() => import("./document-canvas"), { ssr: false });
+// The placeholder holds the left grid column while pdf.js loads; without it the inspector jumps into that column.
+const DocumentCanvas = dynamic(() => import("./document-canvas"), {
+  ssr: false,
+  loading: () => <section className="grid place-items-center border-r border-border bg-canvas text-[13px] text-ink-3">Loading document…</section>,
+});
 
 export function RunWorkspace({ source }: { source: RunSource }) {
   const { view, detail, error, runId, reloadDetail, replay, playing } = useRun(source);
@@ -397,7 +401,7 @@ function ActionBar({ runId, view, detail, onDone }: { runId: string; view: RunVi
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
   if (detail?.override && detail.override.action !== "query_sent") return <RerunOnlyBar runId={runId} />;
-  const actions = actionsFor(d.outcome, { hasDraftEmail: !!d.email, isDuplicate: d.primary?.rule === "R-DUP-01" });
+  const actions = actionsFor(d.outcome, { hasDraftEmail: !!d.email, isDuplicate: d.primary?.rule === "R-DUP-01", paymentBlocked: d.paymentBlocked });
 
   async function submit(a: Action, why: string) {
     setBusy(true);
@@ -436,7 +440,11 @@ function ActionBar({ runId, view, detail, onDone }: { runId: string; view: RunVi
           <DialogHeader>
             <DialogTitle>{pending?.label}</DialogTitle>
             <DialogDescription>
-              {pending?.id === "query" ? "Copy this draft into your email client. Nothing is sent from here." : "Your reason is recorded in the audit trail."}
+              {pending?.id === "query"
+                ? "Copy this draft into your email client. Nothing is sent from here."
+                : pending?.id === "approve" && d.paymentBlocked
+                  ? "Only after calling the vendor on the contact already on file — never a number from this invoice or email. Record who you spoke to; it goes in the audit trail."
+                  : "Your reason is recorded in the audit trail."}
             </DialogDescription>
           </DialogHeader>
           {pending?.id === "query" && d.email ? (
@@ -444,7 +452,13 @@ function ActionBar({ runId, view, detail, onDone }: { runId: string; view: RunVi
               {`To: ${d.email.to}\nSubject: ${d.email.subject}\n\n${d.email.body}`}
             </pre>
           ) : (
-            <Textarea autoFocus value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. Price increase agreed with the supplier on 11 Nov" />
+            <Textarea autoFocus value={reason} onChange={(e) => setReason(e.target.value)} placeholder={
+              pending?.id === "approve" && d.paymentBlocked
+                ? "e.g. Called the AR contact on file (number from vendor master), 17 Nov — they confirmed the new account"
+                : pending?.id === "reject"
+                  ? "e.g. Duplicate of an invoice already paid"
+                  : "e.g. Price increase agreed with the supplier on 11 Nov"
+            } />
           )}
           <DialogFooter>
             {pending?.id === "query" && d.email && (
