@@ -5,6 +5,7 @@ import type { Emit, Extractor, Repo } from "./ports";
 import { formatUsd, toCents } from "@/domain/money";
 import { ExtractionInvalidError } from "@/ai/gemini-extractor";
 import { inspect } from "./stages/inspect";
+import { placeBoxes } from "./locate";
 import { validate } from "./stages/validate";
 import { vendorCheck } from "./stages/vendor";
 import { poLookup } from "./stages/po";
@@ -112,7 +113,7 @@ export async function runPipeline(input: RunInput, deps: RunDeps): Promise<{ run
       const ex = await stage("extract", async () => {
         try {
           const r = await extractor.extract(input.pdf, sha, { fresh: input.fresh, onRetry });
-          invoice = r.invoice;
+          invoice = placeBoxes(r.invoice, ins.data.pageItems, ins.data.kind);
           model = r.model;
           cached = r.cached;
           const filled = Object.values(r.invoice).filter((v) => v && typeof v === "object" && "value" in v && (v as { value: unknown }).value !== null).length;
@@ -137,8 +138,8 @@ export async function runPipeline(input: RunInput, deps: RunDeps): Promise<{ run
           const findings = [...r.findings, { level: "info" as const, text: "Totals don't reconcile — re-reading the document once" }];
           try {
             const re = await extractor.extract(input.pdf, sha, { reextract: { reason }, fresh: input.fresh, onRetry });
-            invoice = re.invoice;
-            r = validate(re.invoice, ctx);
+            invoice = placeBoxes(re.invoice, ins.data.pageItems, ins.data.kind);
+            r = validate(invoice, ctx);
             r.findings = [...findings, ...r.findings];
           } catch {
             r.findings = [...findings, { level: "warn", text: "Re-read failed; keeping the first reading" }];

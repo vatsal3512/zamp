@@ -8,9 +8,12 @@ const f = <T>(value: T, quote: string | null = value === null ? null : String(va
 const printedDate = (iso: string | null) =>
   iso ? new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }) : null;
 
-const usd = (n: number) => `$${Math.abs(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+/** An amount quoted exactly as the template prints it (same locale, symbol and sign). */
+const printed = (n: number, cur: InvoiceDoc["currency"]) =>
+  `${n < 0 ? "-" : ""}${cur === "INR" ? "₹" : "$"}${new Intl.NumberFormat(cur === "INR" ? "en-IN" : "en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(n))}`;
 
 export function docToExtraction(d: InvoiceDoc): ExtractedInvoice {
+  const usd = (n: number) => printed(n, d.currency);
   const documentType: DocumentType = d.layout === "statement" ? "statement" : d.layout === "credit" ? "credit_note" : "invoice";
   const taxSum = d.taxes.reduce((s, t) => s + t.amount, 0);
   const inclTax = d.taxInclusive ? Number((d.note ?? "").match(/\$([\d,.]+)/)?.[1].replace(/,/g, "") ?? NaN) : null;
