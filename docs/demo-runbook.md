@@ -6,21 +6,23 @@
 2. Check the ledger strip: **Eval suite 21/21** in green. If not, stop and run `npx tsx scripts/eval.ts`.
 3. Warm the app: open one stored run and the AOP page once (first loads are slower).
 4. Browser at 1440×900 (or 1280×720) and **zoom 110%** for recording. Close other tabs; turn off notifications.
-5. Have these files on the desktop for "upload anything": `fixtures/pdfs/zamp-candidate-guide.pdf` (kept out of the seeded inbox, so it is never public on the deployed site), `fixtures/pdfs/acme-AC-5531-photo.jpg`.
+5. In the AP inbox header, leave **Live AI** on: every Process reads the invoice with Gemini (about 4 s; the log names the model). If the network or Gemini is shaky, switch to **Recorded** for instant, identical replays.
+6. Have these files on the desktop for "upload anything": `fixtures/pdfs/zamp-candidate-guide.pdf` (kept out of the seeded inbox, so it is never public on the deployed site), `fixtures/pdfs/acme-AC-5531-photo.jpg`.
 
 ## Run order (5-minute video)
 
 | # | Do | Say (one line) |
 |---|---|---|
 | 1 | Bills screen, point at the ledger strip | "An AP agent: AI reads the invoice, rules make the decision, a person answers one question when it matters." |
-| 2 | Inbox → **Happy** → Process | "Every step streams live with its real timing. Every field carries a quote verified on the page." |
+| 2 | Inbox → **Happy** → Process | "Every step streams live — watch the bar across the top. Gemini reads the invoice; every field carries a quote verified on the page. The paragraph under the decision is the whole story in plain English." |
 | 3 | Decision: Approved & posted | "Touchless: matched PO, receipt and price, then posted and read the ledger back to confirm the write." |
 | 4 | **EC-3a** then **EC-3b** | "A resend with a tweaked number is rejected as a duplicate — but next month's identical subscription is approved. The service-period guard prevents the false alarm." |
 | 5 | **EC-4** | "Amounts are perfect, but the bank account changed and the email came from a look-alike domain. Payment blocked; the one question tells Treasury to call the contact on file." |
 | 6 | **PV** → held at 2% | "A 4.2% supplier price increase on a contracted line." |
 | 7 | AOP & controls → price tolerance 5% → **Save & re-run last invoice** | "Policy is configuration, not code. The decision flips — and the banner says exactly why." |
 | 8 | Bills → point at **EC-1**, **EC-5** in the table | "Split billing that overruns the PO at contracted prices; and an invoice whose lines don't add up — re-read once, then held, never guessed." |
-| 9 | AOP → Assumptions & brief coverage | "Every sentence of the brief maps to a rule and a fixture that proves it — 21 of 21." |
+| 9 | Bills → **Process all** (about 35 s) | "Now the whole inbox: 21 emails, three at a time. A quarter go straight through; fraud and duplicates are blocked; everything else waits on one question for the right owner." |
+| 10 | AOP → Assumptions & brief coverage | "Every sentence of the brief maps to a rule and a fixture that proves it — 21 of 21." |
 
 ## Live-interview extras
 - Upload the **Zamp candidate guide** → "Rejected — not an invoice".

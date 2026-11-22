@@ -14,6 +14,7 @@ import { displayStatus, TONE } from "@/lib/status";
 import { liveRunHref } from "@/lib/live-run";
 import { filterRuns } from "@/domain/attention";
 import { RULE_TITLES } from "@/templates/explain";
+import { tidyName } from "@/templates/narrate";
 import { formatPct, formatUsd } from "@/domain/money";
 import type { RuleId } from "@/domain/types";
 import type { InboxRow, RunSummary } from "@/pipeline/ports";
@@ -81,7 +82,7 @@ export function BillsView({ initialTab = "all" }: { initialTab?: "all" | "attent
   const columns: Column<RunSummary>[] = [
     { key: "time", header: "Received", render: (r) => <span className="text-ink-3 tabular">{time(r.startedAt)}</span>, className: "w-[96px]" },
     { key: "invoice", header: "Invoice", render: (r) => <Mono className="text-ink">{r.invoiceNumber ?? "—"}</Mono> },
-    { key: "vendor", header: "Vendor", render: (r) => <span className="text-ink">{r.vendorName ?? "Unknown"}</span> },
+    { key: "vendor", header: "Vendor", render: (r) => <span className="text-ink">{tidyName(r.vendorName) ?? "Unknown"}</span> },
     { key: "amount", header: "Amount", align: "right", render: (r) => <Money cents={r.totalCents} className="text-ink" /> },
     { key: "status", header: "Status", render: (r) => <StatusPill outcome={r.outcome} {...displayStatus(r)} /> },
     {

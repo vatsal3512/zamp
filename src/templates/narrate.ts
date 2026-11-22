@@ -17,7 +17,7 @@ const OWNER_TEAM: Record<string, string> = { AP: "the AP team", Procurement: "Pr
 const DOC_KIND: Record<string, string> = { statement: "a statement of account", purchase_order: "a purchase order", quote: "a quote", receipt: "a receipt", other: "a letter or other document" };
 
 /** "UMBRELLA PRINT CO." → "Umbrella Print Co." (only when the reader returned it all in capitals). */
-function tidyName(s: string | null): string | null {
+export function tidyName(s: string | null): string | null {
   if (!s || s !== s.toUpperCase() || !/[A-Z]{2}/.test(s)) return s;
   return s.toLowerCase().replace(/\b([a-z])/g, (m) => m.toUpperCase()).replace(/\b(Llc|Inc|Ltd|Gmbh|Pvt)\b/g, (m) => (m === "Gmbh" ? "GmbH" : m.toUpperCase()));
 }
