@@ -2,11 +2,14 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Mail } from "lucide-react";
+import { ArrowRight, Loader2, Mail, Play } from "lucide-react";
+import { toast } from "sonner";
 import { DataTable, Eyebrow, LedgerStrip, Money, Mono, RuleChip, StatusPill, type Column } from "@/components/primitives";
 import { UploadDrop } from "./upload-drop";
 import { EvalCell } from "./eval-cell";
-import { useApi } from "@/lib/use-api";
+import { useApi, useRefresh } from "@/lib/use-api";
+import { useAiMode, type AiMode } from "@/lib/ai-mode";
+import { streamRun } from "@/lib/run-stream";
 import { displayStatus, TONE } from "@/lib/status";
 import { liveRunHref } from "@/lib/live-run";
 import { filterRuns } from "@/domain/attention";
@@ -28,6 +31,36 @@ export function BillsView({ initialTab = "all" }: { initialTab?: "all" | "attent
   const runs = useMemo(() => runsApi.data?.runs ?? [], [runsApi.data]);
   const k = runsApi.data?.kpis;
   const shown = filterRuns(runs, { needsAttention: tab === "attention" });
+  const [aiMode, setAiMode] = useAiMode();
+  const { bump } = useRefresh();
+  const [batch, setBatch] = useState<{ done: number; total: number } | null>(null);
+  const messages = inboxApi.data?.messages ?? [];
+
+  /**
+   * Process the whole inbox, three runs at a time. Emails from the same sender run in order, so invoices that share
+   * a vendor's POs and invoice history are decided in sequence, as they would arrive.
+   */
+  async function processAll() {
+    if (batch || !messages.length) return;
+    const lanes = [...Map.groupBy(messages, (m) => m.from.split("@")[1] ?? m.from).values()];
+    const total = messages.length;
+    let done = 0, failed = 0;
+    setBatch({ done, total });
+    const worker = async () => {
+      for (let lane = lanes.shift(); lane; lane = lanes.shift()) {
+        for (const m of lane) {
+          await streamRun({ inboxMessageId: m.id, fresh: aiMode === "live" }, () => {}).catch(() => void failed++);
+          setBatch({ done: ++done, total });
+          runsApi.reload();
+        }
+      }
+    };
+    await Promise.all([worker(), worker(), worker()]);
+    setBatch(null);
+    bump();
+    if (failed) toast.error(`${failed} of ${total} runs couldn't start`);
+    else toast.success(`Processed all ${total} emails`);
+  }
 
   // Open exceptions only: a reviewer's approve / sign-off / reject closes one, matching the Needs-attention count.
   // Crimson for blocked payments (rejects, fraud signals), amber for holds a person must answer.
@@ -84,7 +117,19 @@ export function BillsView({ initialTab = "all" }: { initialTab?: "all" | "attent
         <section>
           <div className="flex h-10 items-center justify-between border-b border-border bg-surface-2 px-5">
             <Eyebrow>AP inbox</Eyebrow>
-            <span className="text-xs text-ink-3">{inboxApi.data?.messages.length ?? 0} emails · simulated</span>
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-ink-3">{messages.length} emails · simulated</span>
+              <AiModeToggle mode={aiMode} onChange={setAiMode} />
+              <button
+                type="button"
+                onClick={processAll}
+                disabled={!!batch || !messages.length}
+                className="flex h-7 items-center gap-1.5 rounded-md border border-border bg-white px-2.5 text-xs font-medium text-ink hover:bg-surface-2 disabled:opacity-60"
+              >
+                {batch ? <Loader2 className="size-3.5 animate-spin" /> : <Play className="size-3.5" />}
+                {batch ? `Processing ${batch.done}/${batch.total}` : "Process all"}
+              </button>
+            </div>
           </div>
           <UploadDrop />
           <ul className="max-h-[288px] divide-y divide-border overflow-y-auto">
@@ -98,7 +143,7 @@ export function BillsView({ initialTab = "all" }: { initialTab?: "all" | "attent
                 <Mono className="rounded border border-border px-1.5 py-0.5 text-ink-2">{m.scenarioTag}</Mono>
                 <button
                   type="button"
-                  onClick={() => router.push(liveRunHref({ inbox: m.id }))}
+                  onClick={() => router.push(liveRunHref({ inbox: m.id, fresh: aiMode === "live" }))}
                   className="h-7 rounded-md bg-primary px-2.5 text-xs font-medium text-white hover:bg-primary/85"
                 >
                   Process
@@ -155,6 +200,30 @@ export function BillsView({ initialTab = "all" }: { initialTab?: "all" | "attent
           empty={tab === "all" ? "No bills yet — process an email from the AP inbox." : "Nothing needs attention."}
         />
       )}
+    </div>
+  );
+}
+
+function AiModeToggle({ mode, onChange }: { mode: AiMode; onChange: (m: AiMode) => void }) {
+  const opts: { id: AiMode; label: string; title: string }[] = [
+    { id: "live", label: "Live AI", title: "Read every invoice with Gemini now (about 4 s). Falls back to the recorded reading only if the call fails." },
+    { id: "recorded", label: "Recorded", title: "Replay the stored Gemini reading — instant and identical every time." },
+  ];
+  return (
+    <div className="flex h-7 items-center rounded-md border border-border bg-white p-0.5 text-xs" role="radiogroup" aria-label="How invoices are read">
+      {opts.map((o) => (
+        <button
+          key={o.id}
+          type="button"
+          role="radio"
+          aria-checked={mode === o.id}
+          title={o.title}
+          onClick={() => onChange(o.id)}
+          className={cn("h-full rounded px-2", mode === o.id ? "bg-primary font-medium text-white" : "text-ink-2 hover:text-ink")}
+        >
+          {o.label}
+        </button>
+      ))}
     </div>
   );
 }

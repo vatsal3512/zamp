@@ -8,6 +8,7 @@ import { AlertTriangle, RefreshCw, Check, ChevronRight, CircleAlert, CircleDashe
 import { toast } from "sonner";
 import { useRun, type RunSource, type RunView, type StageView } from "./use-run";
 import type { Highlight } from "./document-canvas";
+import { PipelineBar } from "./pipeline-bar";
 import { Eyebrow, Money, Mono, RuleChip, StatusPill, ToneDot } from "@/components/primitives";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -17,6 +18,7 @@ import { liveRunHref } from "@/lib/live-run";
 import { STATUS_META, TONE } from "@/lib/status";
 import { useApi, useRefresh } from "@/lib/use-api";
 import { decisionDiff } from "@/lib/decision-diff";
+import { narrate, type NarrateContext } from "@/templates/narrate";
 import { formatPct } from "@/domain/money";
 import type { Finding, Outcome, Policy } from "@/domain/types";
 import type { RunDetail } from "@/pipeline/ports";
@@ -68,6 +70,13 @@ export function RunWorkspace({ source }: { source: RunSource }) {
 
       <section className="flex h-full min-h-0 min-w-0 flex-col">
         <InspectorHeader view={view} outcome={outcome} detail={detail?.run ?? null} />
+        <PipelineBar
+          view={view}
+          onSelect={(id) => {
+            if (view.done) setLogOpen(true);
+            requestAnimationFrame(() => document.getElementById(`stage-${id}`)?.scrollIntoView({ behavior: "smooth", block: "center" }));
+          }}
+        />
         <div className="min-h-0 flex-1 overflow-y-auto">
           {!view.done || logOpen ? (
             <ActivityLog view={view} onFocusPage={(p) => { setFocus(p); document.getElementById(`pdf-page-${p}`)?.scrollIntoView({ behavior: "smooth" }); }} />
@@ -141,7 +150,7 @@ function ActivityLog({ view, onFocusPage }: { view: RunView; onFocusPage: (p: nu
       <ol className="divide-y divide-border">
         <AnimatePresence initial={false}>
           {view.stages.map((s) => (
-            <motion.li key={s.id} initial={{ opacity: 0, x: -4 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}>
+            <motion.li key={s.id} id={`stage-${s.id}`} initial={{ opacity: 0, x: -4 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}>
               <ActivityStep stage={s} view={view} onFocusPage={onFocusPage} />
             </motion.li>
           ))}
@@ -230,10 +239,22 @@ function ActivitySummary({ view, open, onToggle, onReplay, playing }: { view: Ru
   );
 }
 
+/** What the story needs from the run: who billed, how much, which PO, and whether a goods receipt exists. */
+function narrationContext(view: RunView): NarrateContext {
+  const inv = view.invoice;
+  return {
+    vendorName: view.vendor?.legalName ?? inv?.vendorName.value ?? null,
+    invoiceNumber: inv?.invoiceNumber.value ?? null,
+    totalCents: inv?.total.value != null ? Math.round(inv.total.value * 100) : null,
+    currency: inv?.currency.value ?? null,
+    poNumber: view.po?.poNumber ?? null,
+    received: view.grns.length > 0,
+  };
+}
+
 function DecisionBanner({ view, detail }: { view: RunView; detail: RunDetail | null }) {
   const d = view.decision!;
   const tone = STATUS_META[d.outcome].tone;
-  const binding = d.hits.filter((h) => h.outcome !== "NOTE");
   return (
     <div className={cn("border-b border-l-[3px] border-border px-6 py-5", TONE[tone].edge)}>
       <div className="flex items-start gap-3">
@@ -241,22 +262,26 @@ function DecisionBanner({ view, detail }: { view: RunView; detail: RunDetail | n
         <div className="min-w-0 flex-1">
           <div className="text-[16px] font-semibold text-ink">{d.summary}</div>
           {d.owner && d.outcome !== "APPROVE" && <div className="mt-0.5 text-xs text-ink-3">Owner: {d.owner}</div>}
-          <ul className="mt-3 space-y-1.5">
-            {d.reasons.map((r, i) => (
-              <li key={i} className="flex gap-2 text-[13px] text-ink-2">
-                <span className="mt-[7px] size-1 shrink-0 rounded-full bg-ink-3" />
-                {r}
-              </li>
-            ))}
-          </ul>
+          <p className="mt-3 max-w-[62ch] text-[14px] leading-relaxed text-ink">{narrate(d, narrationContext(view))}</p>
           {d.question && (
             <div className="mt-4 rounded-md border border-border bg-surface-2 px-3.5 py-2.5 text-[13px] text-ink">
               <span className="mr-1.5 font-semibold">?</span>{d.question}
             </div>
           )}
           {d.paymentBlocked && <div className="mt-3 text-[13px] font-medium text-st-crimson">Payment blocked until verified.</div>}
-          {binding.length + d.hits.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-1.5">{d.hits.map((h) => <RuleChip key={h.rule} rule={h.rule} />)}</div>
+          {d.hits.length > 0 && (
+            <div className="mt-4 border-t border-border pt-3">
+              <Eyebrow>Rules applied</Eyebrow>
+              <ul className="mt-2 space-y-1.5">
+                {d.reasons.map((r, i) => (
+                  <li key={i} className="flex gap-2 text-[13px] text-ink-2">
+                    <span className="mt-[7px] size-1 shrink-0 rounded-full bg-ink-3" />
+                    {r}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-2.5 flex flex-wrap gap-1.5">{d.hits.map((h) => <RuleChip key={h.rule} rule={h.rule} />)}</div>
+            </div>
           )}
           {detail?.override && (
             <div className="mt-4 text-[13px] text-ink-2">

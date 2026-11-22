@@ -7,8 +7,9 @@ import type { Decision, ExtractedInvoice, Finding, GoodsReceipt, NetLine, Purcha
 import type { InboxRow, RunDetail } from "@/pipeline/ports";
 import type { LineMatch } from "@/pipeline/stages/match";
 import { STAGE_IDS } from "@/domain/types";
+import type { LiveRunBody } from "@/lib/live-run";
 
-export type RunSource = { kind: "live"; body: { inboxMessageId?: string; documentId?: string; rerunOf?: string } } | { kind: "stored"; runId: string };
+export type RunSource = { kind: "live"; body: LiveRunBody } | { kind: "stored"; runId: string };
 
 export interface StageView {
   id: StageId; label: string; status: "pending" | "running" | "done" | "failed";

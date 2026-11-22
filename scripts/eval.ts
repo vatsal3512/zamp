@@ -20,7 +20,7 @@ async function main() {
     models: list(process.env.GEMINI_MODELS),
     withBoxes: process.env.EXTRACT_BOXES === "true",
   });
-  const cached = new CachedExtractor(gemini, fileCacheStore());
+  const cached = new CachedExtractor(gemini, fileCacheStore(), { refresh: fresh });
   const extractor = { extract: (pdf: Uint8Array, sha: string, o?: ExtractOptions) => cached.extract(pdf, sha, { ...o, fresh: fresh || o?.fresh }) };
 
   const results = await runEval({ extractor, loadPdf: pdfFromDisk() });
